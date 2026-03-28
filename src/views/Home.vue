@@ -94,13 +94,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
 import { Present, TopRight, Calendar, ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import { categories,quickCards } from '../unit/curatedList.js'
-import {valueEquals} from "element-plus";
+import { getCouponList } from '../api/index.js'
 
 
 const router = useRouter()
@@ -118,6 +118,23 @@ const coupons = ref([
   { id: 8, name: '机场接机', discount: '预约9折', category: 2 }
 ])
 
+
+const getCouponLists = async (type = '0') => {
+  try {
+    const params = {
+      type: type,
+      pageNum: 1,
+      pageSize: 999,
+    }
+    const response = await getCouponList(params)
+    if (response.code === 200) {
+      coupons.value = response.data || []
+    }
+  } catch (error) {
+    console.error('获取优惠券列表失败:', error)
+  }
+}
+
 const filteredCoupons = computed(() => {
   return coupons.value.filter(c => c.category === activeCategory.value)
 })
@@ -129,6 +146,10 @@ const goToCouponList = () => {
 const goToCouponDetail = (coupon) => {
   router.push(`/coupon/${coupon.id}`)
 }
+
+onMounted(() => {
+  getCouponLists()
+})
 </script>
 
 <style scoped>

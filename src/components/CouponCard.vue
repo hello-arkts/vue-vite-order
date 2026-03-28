@@ -236,28 +236,6 @@ const activeCoupon = (row, index) => {
   margin-top: 6px;
 }
 
-/* 抽屉样式 */
-.drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.coupon-drawer{
-
-}
-
-
-.drawer-title {
-  font-size: var(--font-md);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.drawer-content {
-}
-
 /* 商户信息 */
 .merchant-info {
   display: flex;
