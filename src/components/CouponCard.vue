@@ -2,7 +2,7 @@
   <el-card class="coupon-card" shadow="hover" @click="handleCardClick">
     <div class="card-content">
       <div class="card-logo">
-        <el-avatar :size="56" :style="{ background: logoColor }">
+        <el-avatar :size="35" :style="{ background: logoColor }">
           {{ coupon.name.charAt(0) }}
         </el-avatar>
       </div>
@@ -174,9 +174,19 @@ const handleNavigation = () => {
 
 <style scoped>
 .coupon-card {
+  display: block;
+  width: 168px;
+  height: 132px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
+  border-radius: 22px 22px 22px 22px;
   cursor: pointer;
   transition: all 0.25s ease;
-  border-radius: var(--radius-md);
+  padding:16px ;
+}
+
+:deep(.el-card__body){
+  padding: 0 !important;
 }
 
 .coupon-card:hover {
@@ -187,19 +197,12 @@ const handleNavigation = () => {
   transform: scale(0.98);
 }
 
-.coupon-card :deep(.el-card__body) {
-  padding: 16px;
-}
-
 .card-content {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-}
-
-.card-logo {
-  margin-bottom: 4px;
+  gap: 2px;
 }
 
 .card-logo :deep(.el-avatar) {
@@ -208,31 +211,31 @@ const handleNavigation = () => {
 }
 
 .card-name {
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   color: var(--text-primary);
   font-weight: 500;
   text-align: center;
-  line-height: 1.3;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 84px;
+  height: 12px;
+  font-style: normal;
+  text-transform: none;
 }
 
 .card-discount {
   font-size: var(--font-sm);
   color: var(--primary-red);
-  font-weight: 600;
+  font-weight: 500;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
 }
 
 .card-btn {
-  margin-top: 4px;
-}
-
-.coupon-card:hover .card-btn {
-  background: var(--primary-red);
-  border-color: var(--primary-red);
-  color: white;
+  margin-top: 6px;
 }
 
 /* 抽屉样式 */

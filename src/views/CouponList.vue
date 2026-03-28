@@ -4,9 +4,11 @@
     <NavBar title="精选优惠" />
 
     <!-- 分类标签 -->
-    <CategoryTabs 
-      v-model="activeCategory" 
-      :tabs="categories" 
+    <CategoryTabs
+        v-model="activeCategory"
+        :tabs="categories"
+        :paddingNum="0"
+        bgColor="var(--bg-transparent)"
     />
 
     <!-- 优惠券列表 -->

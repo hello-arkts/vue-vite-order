@@ -49,7 +49,7 @@ const handleSelect = (index) => {
 <style scoped>
 .category-tabs {
   display: flex;
-  gap: 12px;
+  gap: 0 12px;
   padding: 12px 16px;
   overflow-x: auto;
   background: var(--bg-card);
@@ -71,18 +71,22 @@ const handleSelect = (index) => {
   height: 34px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  padding: 8px 16px;
   background: var(--bg-page);
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.25s ease;
   font-size: var(--font-sm);
   color: var(--text-secondary);
   border: 1px solid transparent;
   background: #FFFFFF;
   box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
   border-radius: 22px 22px 22px 22px;
+  font-weight: bold;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+  margin-bottom: 10px;
 }
 
 .tab-item:active {
@@ -90,9 +94,10 @@ const handleSelect = (index) => {
 }
 
 .tab-item.active {
-  background: var(--primary-red-light);
-  color: var(--primary-red);
-  border-color: var(--primary-red-border);
+  color: var(--text-white);
+  background: #FF3957;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
+  border-radius: 22px 22px 22px 22px;
 }
 
 .tab-icon {
@@ -102,12 +107,8 @@ const handleSelect = (index) => {
 }
 
 .tab-icon-image {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
   object-fit: contain;
-}
-
-.tab-name {
-  font-weight: 500;
 }
 </style>

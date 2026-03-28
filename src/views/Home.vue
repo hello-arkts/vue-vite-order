@@ -47,6 +47,7 @@
         </div>
         <img src="../assets/icons/calendar.svg" alt="calendar" style="width: 20px; height: 20px;" />
       </div>
+      <el-divider direction="horizontal" border-style="double" />
       <div class="banner-tags">
         <span>全5星住宿出行</span>
         <el-divider direction="vertical" />
@@ -332,16 +333,15 @@ const goToCouponDetail = (coupon) => {
   padding: 25px 0 16px ;
   margin: 0 16px 16px;
   border-radius: var(--radius-lg);
-  overflow: hidden;
   background: transparent;
   border: none;
 }
 
 .coupon-grid {
+  margin-top: 12px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  padding: 0 16px;
 }
 
 /* ============ 响应式设计 ============ */
