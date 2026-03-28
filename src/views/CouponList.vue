@@ -7,15 +7,15 @@
     <CategoryTabs
         v-model="activeCategory"
         :tabs="categories"
-        :paddingNum="0"
+        :paddingNum="17"
         bgColor="var(--bg-transparent)"
     />
 
     <!-- 优惠券列表 -->
     <div class="coupon-content">
       <div class="coupon-grid">
-        <CouponCard 
-          v-for="coupon in filteredCoupons" 
+        <CouponCard
+          v-for="coupon in filteredCoupons"
           :key="coupon.id"
           :coupon="coupon"
           @click="goToCouponDetail"
@@ -68,12 +68,11 @@ const goToCouponDetail = (coupon) => {
 <style scoped>
 .coupon-list-page {
   min-height: 100vh;
-  background: var(--bg-card);
+  background: #FBF9ED;
 }
 
 .coupon-content {
-  padding: 16px;
-  background: var(--bg-page);
+  padding: 0 16px;
   min-height: calc(100vh - 100px);
 }
 

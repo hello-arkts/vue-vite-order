@@ -1,7 +1,7 @@
 <template>
   <div class="nav-bar">
     <div class="nav-left" @click="handleBack">
-      <el-icon :size="20"><ArrowLeft /></el-icon>
+      <img src="../assets/icons/fh.svg" alt="返回" width="24" height="24" />
     </div>
     <div class="nav-title">{{ title }}</div>
     <div class="nav-right">
@@ -44,16 +44,13 @@ const handleShare = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 44px;
-  padding: 0 16px;
-  background: var(--bg-card);
+  padding: 16px 16px 0 16px;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .nav-left {
-  width: 60px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -66,7 +63,6 @@ const handleShare = () => {
 
 .nav-title {
   flex: 1;
-  text-align: center;
   font-size: var(--font-md);
   font-weight: 600;
   color: var(--text-primary);

@@ -67,13 +67,12 @@ const handleSelect = (index) => {
 }
 
 .tab-item {
-  width: 112px;
+  flex: 0 0 112px;
   height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  background: var(--bg-page);
   white-space: nowrap;
   cursor: pointer;
   font-size: var(--font-sm);
@@ -87,6 +86,8 @@ const handleSelect = (index) => {
   font-style: normal;
   text-transform: none;
   margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tab-item:active {
