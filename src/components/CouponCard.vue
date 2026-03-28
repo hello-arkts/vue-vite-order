@@ -18,21 +18,14 @@
     direction="btt"
     size="85%"
     :show-close="false"
+    :with-header="false"
     class="coupon-drawer"
+    style="border-radius: 26px 26px 0 0"
   >
-    <template #header>
-      <div class="drawer-header">
-        <span class="drawer-title">{{ coupon.name }}</span>
-        <el-button type="primary" link @click="drawerVisible = false">
-          <el-icon><Close /></el-icon>
-        </el-button>
-      </div>
-    </template>
-    
     <div class="drawer-content">
       <!-- 商户信息 -->
       <div class="merchant-info">
-        <el-avatar :size="80" :style="{ background: logoColor }">
+        <el-avatar :size="61" :style="{ background: logoColor }">
           {{ coupon.name.charAt(0) }}
         </el-avatar>
         <h2 class="merchant-name">{{ coupon.name }}</h2>
@@ -240,18 +233,17 @@ const handleNavigation = () => {
 }
 
 /* 抽屉样式 */
-.coupon-drawer :deep(.el-drawer__header) {
-  margin-bottom: 0;
-  padding: 16px;
-  border-bottom: 1px solid var(--border-light);
-}
-
 .drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
+
+.coupon-drawer{
+
+}
+
 
 .drawer-title {
   font-size: var(--font-md);
@@ -260,7 +252,6 @@ const handleNavigation = () => {
 }
 
 .drawer-content {
-  padding: 24px 16px;
 }
 
 /* 商户信息 */
@@ -268,26 +259,35 @@ const handleNavigation = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .merchant-info :deep(.el-avatar) {
   font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 12px;
+  font-weight: bold;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+  margin-bottom: 5px;
 }
 
 .merchant-name {
-  font-size: var(--font-xl);
-  font-weight: 600;
+  font-size: var(--font-lg);
+  font-weight: bold;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
   color: var(--text-primary);
   margin: 0 0 8px;
 }
 
 .discount-text {
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   color: var(--primary-red);
-  font-weight: 600;
+  font-weight: bold;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
 }
 
 /* 二维码区域 */
@@ -299,8 +299,8 @@ const handleNavigation = () => {
 }
 
 .qrcode-box {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   padding: 12px;
   background: white;
   border: 1px solid var(--border-light);
@@ -365,7 +365,7 @@ const handleNavigation = () => {
 .type-card {
   min-width: 140px;
   padding: 12px;
-  background: var(--bg-card);
+  background: #ffe2d7;
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -379,7 +379,6 @@ const handleNavigation = () => {
 
 .type-card.active {
   border-color: var(--primary-red);
-  background: var(--primary-red-light);
 }
 
 .type-header {
