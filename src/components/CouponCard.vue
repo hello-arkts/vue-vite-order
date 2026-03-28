@@ -53,7 +53,7 @@
             :key="index"
             class="type-card"
             :class="{ active: activeCouponType === index }"
-            @click="activeCouponType = index"
+            @click="activeCoupon(type, index)"
           >
             <div class="type-header">
               <span class="type-name">{{ type.name }}</span>
@@ -67,12 +67,11 @@
 
       <!-- 门店地址 -->
       <div class="store-address">
-        <div class="address-header">
-          <el-icon><Location /></el-icon>
-          <span class="address-label">门店地址：</span>
+        <div class="address-row">
+          <img src="../assets/icons/location.svg" alt="定位" class="location-icon" />
+          <span class="address-text">{{ storeAddress }}</span>
+          <el-icon class="dropdown-icon"><ArrowDown /></el-icon>
         </div>
-        <div class="address-text">{{ storeAddress }}</div>
-        <el-button type="primary" link @click="copyAddress">复制地址</el-button>
       </div>
 
       <!-- 导航按钮 -->
@@ -92,6 +91,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { ArrowDown } from '@element-plus/icons-vue'
 import { Close, Location, Position } from '@element-plus/icons-vue'
 
 const props = defineProps({
@@ -162,6 +162,10 @@ const copyAddress = () => {
 
 const handleNavigation = () => {
   ElMessage.success('正在打开导航...')
+}
+
+const activeCoupon = (row, index) => {
+  activeCouponType.value = index
 }
 </script>
 
@@ -295,7 +299,7 @@ const handleNavigation = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .qrcode-box {
@@ -347,7 +351,7 @@ const handleNavigation = () => {
 
 /* 券类型选择 */
 .coupon-types {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .types-scroll {
@@ -417,27 +421,38 @@ const handleNavigation = () => {
 
 /* 门店地址 */
 .store-address {
-  padding: 16px;
-  background: var(--bg-page);
+  padding: 12px 16px;
+  background: #FFFFFF;
   border-radius: var(--radius-md);
   margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.address-header {
+.address-row {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 8px;
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
+  gap: 8px;
+}
+
+.location-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .address-text {
+  flex: 1;
   font-size: var(--font-sm);
   color: var(--text-primary);
-  line-height: 1.5;
-  white-space: pre-line;
-  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-icon {
+  font-size: 16px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
 }
 
 /* 导航按钮 */
@@ -497,7 +512,20 @@ const handleNavigation = () => {
   }
   
   .store-address {
-    padding: 20px;
+    padding: 16px 20px;
+  }
+  
+  .location-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .address-text {
+    font-size: var(--font-base);
+  }
+  
+  .dropdown-icon {
+    font-size: 18px;
   }
   
   .nav-btn {
@@ -546,7 +574,12 @@ const handleNavigation = () => {
   }
   
   .store-address {
-    padding: 16px;
+    padding: 12px 16px;
+  }
+  
+  .location-icon {
+    width: 20px;
+    height: 20px;
   }
   
   .nav-btn {
