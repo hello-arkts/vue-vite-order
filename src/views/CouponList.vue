@@ -32,7 +32,7 @@ import { useRouter } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
-import categories from '../unit/curatedList.js'
+import { categories } from '../unit/curatedList.js'
 
 
 const router = useRouter()

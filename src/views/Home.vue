@@ -14,7 +14,7 @@
     </div>
 
     <!-- 快速通关区域 -->
-    <el-card class="quick-section" shadow="hover">
+    <el-card class="quick-section" shadow="never">
       <div class="section-header">
         <span class="section-title">快速通关</span>
         <el-tag effect="dark" class="quick-tag" round>
@@ -24,10 +24,13 @@
       </div>
       <div class="quick-cards">
         <div class="quick-card" v-for="card in quickCards" :key="card.title">
-          <span class="card-icon">{{ card.icon }}</span>
+          <img class="card-icon" :src="card.icon" :alt="card.title" />
           <div class="card-content">
-            <div class="card-title">{{ card.title }} <el-icon><TopRight /></el-icon></div>
-            <div class="card-desc">{{ card.desc }}</div>
+            <div class="card-title">
+              <span>{{ card.title }}</span>
+              <img src="../assets/icons/fx.svg" alt="arrow-right" style="width: 13px; height: 13px;" />
+            </div>
+            <div class="card-desc" :style="{ color: card.color }">{{ card.desc }}</div>
           </div>
         </div>
       </div>
@@ -87,18 +90,12 @@ import { useRouter } from 'vue-router'
 import { Present, TopRight, Calendar, ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
-import categories from '../unit/curatedList.js'
+import { categories,quickCards } from '../unit/curatedList.js'
 
 
 const router = useRouter()
 const activeCategory = ref(0)
 
-const quickCards = [
-  { icon: '📋', title: '入境卡申请', desc: '温馨提示：入境必须' },
-  { icon: '🎫', title: '海关VIP通道', desc: '无需等待' },
-  { icon: '📱', title: '泰国电信卡', desc: 'eSim & 实体卡' },
-  { icon: '🚗', title: 'VIP接机', desc: '专属服务' }
-]
 
 const coupons = ref([
   { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
@@ -127,12 +124,11 @@ const goToCouponDetail = (coupon) => {
 <style scoped>
 .home-page {
   min-height: 100vh;
-  background: var(--bg-page);
+  background: var(--bg-gradient-yellow);
 }
 
 /* 顶部区域 */
 .header-section {
-  background: linear-gradient(180deg, #ffd6d6 0%, #f5f5f5 100%);
   padding: 16px 16px 0;
 }
 
@@ -166,15 +162,20 @@ const goToCouponDetail = (coupon) => {
 
 /* 快速通关 */
 .quick-section {
+  border: 0;
   margin: 28px 16px;
   border-radius: var(--radius-lg);
+  background: transparent;
+}
+:deep(.el-card__body){
+  padding: 0;
 }
 
 .section-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .section-header_bottom {
@@ -186,8 +187,11 @@ const goToCouponDetail = (coupon) => {
 }
 
 .section-title {
-  font-size: var(--font-lg);
-  font-weight: 600;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+  font-size: var(--radius-lg);
+  font-weight: bold;
   color: var(--text-primary);
 }
 
@@ -206,6 +210,8 @@ const goToCouponDetail = (coupon) => {
 }
 :deep(.el-tag){
   background: linear-gradient( 90deg, #AE1E26 0%, #FF392B 100%) !important;
+  width: 126px;
+  height: 21px;
   border: 0px;
 }
 
@@ -221,7 +227,8 @@ const goToCouponDetail = (coupon) => {
   gap: 8px;
   padding: 12px;
   background: var(--bg-page);
-  border-radius: var(--radius-md);
+  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.08);
+  border-radius: 22px 22px 22px 22px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -243,18 +250,24 @@ const goToCouponDetail = (coupon) => {
 }
 
 .card-title {
-  font-size: var(--font-sm);
-  font-weight: 500;
+  font-size: var(--font-base);
+  font-weight: bold;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 2px;
+  font-style: normal;
+  text-transform: none;
+  gap: 8px;
 }
 
 .card-desc {
-  font-size: var(--font-xs);
+  font-size: var(--font-sm);
   color: var(--text-tertiary);
-  margin-top: 2px;
+  margin-top: 4px;
+  font-weight: 400;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
 }
 
 /* Banner */

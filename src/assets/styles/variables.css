@@ -9,6 +9,7 @@
   --bg-card: #ffffff;
   --bg-gradient-pink: linear-gradient(180deg, #ffb6c1 0%, #ffd1dc 100%);
   --bg-gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-gradient-yellow: linear-gradient( 0deg, #FBF9ED 0%, #FFAD73 100%);
   
   /* 文字色 */
   --text-primary: #000000;
@@ -102,6 +103,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Noto Sans SC, Noto Sans SC;
 }
 
 html {
