@@ -47,7 +47,7 @@
         </div>
         <img src="../assets/icons/calendar.svg" alt="calendar" style="width: 20px; height: 20px;" />
       </div>
-      <el-divider direction="horizontal" border-style="double" />
+      <el-divider direction="horizontal" class="banner-divider" />
       <div class="banner-tags">
         <span>全5星住宿出行</span>
         <el-divider direction="vertical" />
@@ -286,6 +286,12 @@ const goToCouponDetail = (coupon) => {
   background: linear-gradient( 90deg, #FF6464 0%, #5F0FFF 100%);
   border-radius: 21px 21px 21px 21px;
   color: white;
+  .banner-divider {
+    margin: 18px 0 12px 0;
+    height: 0;
+    border-radius: 0px 0px 0px 0px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
 }
 
 .banner {
