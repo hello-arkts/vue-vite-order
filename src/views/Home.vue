@@ -40,10 +40,12 @@
     <div class="banner-section">
       <div class="banner">
         <div class="banner-left">
-          <span class="banner-flag">🏳️‍🌈</span>
-          <span class="banner-title">派对旅行 | ROE Pride Season 2026</span>
+          <img src="../assets/icons/ch.svg" alt="flag" style="width: 24px; height: 24px;" />
+          <span class="banner-title">派对旅行</span>
+          <span class="banner-separator">|</span>
+          <span class="banner-title">ROE Pride Season 2026</span>
         </div>
-        <el-icon><Calendar /></el-icon>
+        <img src="../assets/icons/calendar.svg" alt="calendar" style="width: 20px; height: 20px;" />
       </div>
       <div class="banner-tags">
         <span>全5星住宿出行</span>
@@ -274,8 +276,8 @@ const goToCouponDetail = (coupon) => {
 .banner-section {
   margin: 0 16px 16px;
   padding: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: var(--radius-lg);
+  background: linear-gradient( 90deg, #FF6464 0%, #5F0FFF 100%);
+  border-radius: 21px 21px 21px 21px;
   color: white;
 }
 
@@ -292,20 +294,25 @@ const goToCouponDetail = (coupon) => {
   gap: 8px;
 }
 
-.banner-flag {
-  font-size: 16px;
+.banner-title {
+  font-size: var(--font-md);
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
 }
 
-.banner-title {
+.banner-separator {
+  opacity: 0.7;
   font-size: var(--font-sm);
-  font-weight: 600;
 }
 
 .banner-tags {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: var(--font-xs);
+  justify-content: center;
+  font-size: 11px;
   opacity: 0.9;
   flex-wrap: wrap;
 }
@@ -377,10 +384,6 @@ const goToCouponDetail = (coupon) => {
   .banner-section {
     margin: 0 24px 20px;
     padding: 20px 24px;
-  }
-
-  .banner-title {
-    font-size: var(--font-md);
   }
 
   .coupon-section {
