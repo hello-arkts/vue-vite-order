@@ -11,7 +11,7 @@
   --bg-gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   
   /* 文字色 */
-  --text-primary: #333333;
+  --text-primary: #000000;
   --text-secondary: #666666;
   --text-tertiary: #999999;
   --text-white: #ffffff;
@@ -27,6 +27,7 @@
   /* 尺寸 */
   --radius-sm: 8px;
   --radius-md: 12px;
+  --radius-ct: 14px;
   --radius-lg: 16px;
   --radius-full: 9999px;
   
@@ -50,13 +51,61 @@
   --font-lg: 18px;
   --font-xl: 20px;
   --font-xxl: 24px;
+
+  /* 响应式断点 */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+
+  /* 容器宽度 */
+  --container-mobile: 100%;
+  --container-tablet: 720px;
+  --container-desktop: 960px;
+  --container-wide: 1140px;
 }
 
-/* 移动端基础样式 */
+/* 平板端变量调整 */
+@media (min-width: 768px) {
+  :root {
+    --font-xs: 11px;
+    --font-sm: 13px;
+    --font-base: 15px;
+    --font-md: 17px;
+    --font-lg: 20px;
+    --font-xl: 24px;
+    --font-xxl: 28px;
+    --spacing-lg: 20px;
+    --spacing-xl: 24px;
+    --spacing-xxl: 32px;
+  }
+}
+
+/* 桌面端变量调整 */
+@media (min-width: 992px) {
+  :root {
+    --font-xs: 12px;
+    --font-sm: 14px;
+    --font-base: 16px;
+    --font-md: 18px;
+    --font-lg: 22px;
+    --font-xl: 28px;
+    --font-xxl: 32px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+  }
+}
+
+/* 基础样式 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
@@ -66,10 +115,12 @@ body {
   background-color: var(--bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-/* 页面容器 - 移动端居中 */
+/* 页面容器 - 响应式布局 */
 #app {
+  width: 100%;
   max-width: 430px;
   min-height: 100vh;
   margin: 0 auto;
@@ -78,10 +129,65 @@ body {
   overflow-x: hidden;
 }
 
-/* 滚动条样式 */
+/* 平板端 */
+@media (min-width: 768px) {
+  #app {
+    max-width: 720px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 桌面端 */
+@media (min-width: 992px) {
+  #app {
+    max-width: 480px;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-height: 100vh;
+  }
+}
+
+/* 宽屏桌面 */
+@media (min-width: 1200px) {
+  #app {
+    max-width: 520px;
+  }
+  
+  body {
+    padding: 40px;
+  }
+}
+
+/* 滚动条样式 - 桌面端显示 */
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+@media (min-width: 992px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg-page);
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
+  }
 }
 
 /* 点击态 */
@@ -98,4 +204,37 @@ body {
 .no-select {
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* 通用响应式工具类 */
+.hide-mobile {
+  display: none !important;
+}
+
+.hide-tablet {
+  display: block !important;
+}
+
+.hide-desktop {
+  display: block !important;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block !important;
+  }
+  
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .hide-tablet {
+    display: block !important;
+  }
+  
+  .hide-desktop {
+    display: none !important;
+  }
 }

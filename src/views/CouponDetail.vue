@@ -302,4 +302,75 @@ const handleNavigation = () => {
 .nav-btn:hover {
   background: linear-gradient(135deg, #3658c8 0%, #4a6ee8 100%);
 }
+
+/* ============ 响应式设计 ============ */
+
+/* 平板端 (768px+) */
+@media (min-width: 768px) {
+  .detail-content {
+    padding: 20px 24px;
+  }
+  
+  .detail-card :deep(.el-card__body) {
+    padding: 32px 24px;
+  }
+  
+  .merchant-info {
+    margin-bottom: 32px;
+  }
+  
+  .merchant-info :deep(.el-avatar) {
+    width: 96px !important;
+    height: 96px !important;
+    font-size: 40px;
+  }
+  
+  .qrcode-box {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .qrcode-section {
+    margin-bottom: 32px;
+  }
+  
+  .coupon-types {
+    margin-bottom: 32px;
+  }
+  
+  .types-scroll {
+    gap: 16px;
+  }
+  
+  .store-address {
+    padding: 20px;
+    margin-bottom: 32px;
+  }
+  
+  .nav-btn {
+    height: 52px;
+  }
+}
+
+/* 桌面端 (992px+) */
+@media (min-width: 992px) {
+  .detail-content {
+    padding: 20px;
+  }
+  
+  .detail-card :deep(.el-card__body) {
+    padding: 28px 20px;
+  }
+  
+  .merchant-info :deep(.el-avatar) {
+    width: 88px !important;
+    height: 88px !important;
+    font-size: 36px;
+  }
+  
+  .qrcode-box {
+    width: 180px;
+    height: 180px;
+  }
+}
 </style>

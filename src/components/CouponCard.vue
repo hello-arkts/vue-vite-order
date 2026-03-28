@@ -450,4 +450,104 @@ const handleNavigation = () => {
 .nav-btn:hover {
   background: linear-gradient(135deg, #3658c8 0%, #4a6ee8 100%);
 }
+
+/* ============ 响应式设计 ============ */
+
+/* 平板端 (768px+) */
+@media (min-width: 768px) {
+  .coupon-card :deep(.el-card__body) {
+    padding: 20px;
+  }
+  
+  .card-logo :deep(.el-avatar) {
+    width: 64px !important;
+    height: 64px !important;
+    font-size: 28px;
+  }
+  
+  .card-content {
+    gap: 10px;
+  }
+  
+  .drawer-content {
+    padding: 28px 24px;
+  }
+  
+  .merchant-info :deep(.el-avatar) {
+    width: 88px !important;
+    height: 88px !important;
+    font-size: 36px;
+  }
+  
+  .qrcode-box {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .types-scroll {
+    gap: 16px;
+  }
+  
+  .type-card {
+    min-width: 160px;
+    padding: 16px;
+  }
+  
+  .store-address {
+    padding: 20px;
+  }
+  
+  .nav-btn {
+    height: 52px;
+  }
+}
+
+/* 桌面端 (992px+) */
+@media (min-width: 992px) {
+  .coupon-card :deep(.el-card__body) {
+    padding: 16px;
+  }
+  
+  .card-logo :deep(.el-avatar) {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 24px;
+  }
+  
+  .card-content {
+    gap: 8px;
+  }
+  
+  .drawer-content {
+    padding: 24px 20px;
+  }
+  
+  .merchant-info :deep(.el-avatar) {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 32px;
+  }
+  
+  .qrcode-box {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .types-scroll {
+    gap: 12px;
+  }
+  
+  .type-card {
+    min-width: 140px;
+    padding: 12px;
+  }
+  
+  .store-address {
+    padding: 16px;
+  }
+  
+  .nav-btn {
+    height: 48px;
+  }
+}
 </style>

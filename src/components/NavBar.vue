@@ -78,4 +78,42 @@ const handleShare = () => {
   align-items: center;
   justify-content: flex-end;
 }
+
+/* ============ 响应式设计 ============ */
+
+/* 平板端 (768px+) */
+@media (min-width: 768px) {
+  .nav-bar {
+    height: 52px;
+    padding: 0 24px;
+  }
+  
+  .nav-left {
+    width: 80px;
+  }
+  
+  .nav-left :deep(.el-icon) {
+    font-size: 24px;
+  }
+  
+  .nav-right {
+    width: 80px;
+  }
+}
+
+/* 桌面端 (992px+) */
+@media (min-width: 992px) {
+  .nav-bar {
+    height: 48px;
+    padding: 0 20px;
+  }
+  
+  .nav-left {
+    width: 70px;
+  }
+  
+  .nav-right {
+    width: 70px;
+  }
+}
 </style>

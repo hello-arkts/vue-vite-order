@@ -32,15 +32,11 @@ import { useRouter } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
+import categories from '../unit/curatedList.js'
+
 
 const router = useRouter()
 const activeCategory = ref(0)
-
-const categories = [
-  { name: '网红餐厅', icon: '🍜' },
-  { name: '酒店住宿', icon: '🏨' },
-  { name: '租车接机', icon: '🚗' }
-]
 
 // 模拟数据 - 与设计图一致
 const coupons = ref([
@@ -109,4 +105,34 @@ const goToCouponDetail = (coupon) => {
 .coupon-grid > *:nth-child(6) { animation-delay: 0.3s; }
 .coupon-grid > *:nth-child(7) { animation-delay: 0.35s; }
 .coupon-grid > *:nth-child(8) { animation-delay: 0.4s; }
+.coupon-grid > *:nth-child(9) { animation-delay: 0.45s; }
+.coupon-grid > *:nth-child(10) { animation-delay: 0.5s; }
+.coupon-grid > *:nth-child(11) { animation-delay: 0.55s; }
+.coupon-grid > *:nth-child(12) { animation-delay: 0.6s; }
+
+/* ============ 响应式设计 ============ */
+
+/* 平板端 (768px+) */
+@media (min-width: 768px) {
+  .coupon-content {
+    padding: 20px 24px;
+  }
+  
+  .coupon-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+/* 桌面端 (992px+) */
+@media (min-width: 992px) {
+  .coupon-content {
+    padding: 20px;
+  }
+  
+  .coupon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
 </style>

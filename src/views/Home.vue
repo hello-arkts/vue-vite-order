@@ -6,10 +6,10 @@
         <el-avatar :size="48" class="user-avatar">
           U
         </el-avatar>
-        <el-button round size="small" class="lottery-btn">
-          <el-icon><Present /></el-icon>
-          抽奖
-        </el-button>
+        <div class="user-info-title">
+          <img src="../assets/icons/red.svg" alt="抽奖" class="lottery-btn">
+          <span class="lottery-text">抽奖</span>
+        </div>
       </div>
     </div>
 
@@ -17,7 +17,10 @@
     <el-card class="quick-section" shadow="hover">
       <div class="section-header">
         <span class="section-title">快速通关</span>
-        <el-tag type="warning" effect="dark" round>ROE行程客户免费</el-tag>
+        <el-tag effect="dark" class="quick-tag" round>
+          <img src="../assets/icons/tag.svg" alt="ROE" class="roe-icon">
+          ROE行程客户免费
+        </el-tag>
       </div>
       <div class="quick-cards">
         <div class="quick-card" v-for="card in quickCards" :key="card.title">
@@ -52,7 +55,7 @@
 
     <!-- 精选优惠区域 -->
     <el-card class="coupon-section" shadow="never">
-      <div class="section-header">
+      <div class="section-header_bottom">
         <span class="section-title">精选优惠</span>
         <el-button text type="primary" @click="goToCouponList">
           查看所有<el-icon><ArrowRight /></el-icon>
@@ -84,6 +87,8 @@ import { useRouter } from 'vue-router'
 import { Present, TopRight, Calendar, ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
+import categories from '../unit/curatedList.js'
+
 
 const router = useRouter()
 const activeCategory = ref(0)
@@ -93,15 +98,6 @@ const quickCards = [
   { icon: '🎫', title: '海关VIP通道', desc: '无需等待' },
   { icon: '📱', title: '泰国电信卡', desc: 'eSim & 实体卡' },
   { icon: '🚗', title: 'VIP接机', desc: '专属服务' }
-]
-
-const categories = [
-  { name: '网红餐厅', icon: '🍜' },
-  { name: '酒店住宿', icon: '🏨' },
-  { name: '租车接机', icon: '🚗' },
-  { name: '景点门票', icon: '🎫' },
-  { name: '热门零食', icon: '🍿' },
-  { name: '休闲娱乐', icon: '🎭' }
 ]
 
 const coupons = ref([
@@ -137,7 +133,7 @@ const goToCouponDetail = (coupon) => {
 /* 顶部区域 */
 .header-section {
   background: linear-gradient(180deg, #ffd6d6 0%, #f5f5f5 100%);
-  padding: 16px;
+  padding: 16px 16px 0;
 }
 
 .user-info {
@@ -148,33 +144,69 @@ const goToCouponDetail = (coupon) => {
 
 .user-avatar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-size: 20px;
-  font-weight: 600;
-  border: 2px solid white;
+  width: 48px;
+  height: 48px;
+  border: 1px solid white;
+}
+.user-info-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .lottery-text{
+    font-size:12px;
+    font-weight:bold;
+  }
 }
 
 .lottery-btn {
-  background: white;
-  box-shadow: var(--shadow-card);
+  width: 28px;
+  height: 28px;
 }
 
 /* 快速通关 */
 .quick-section {
-  margin: -20px 16px 16px;
+  margin: 28px 16px;
   border-radius: var(--radius-lg);
 }
 
 .section-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 12px;
 }
 
+.section-header_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 0 16px;
+}
+
 .section-title {
-  font-size: var(--font-md);
+  font-size: var(--font-lg);
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.quick-tag {
+  display: flex;
+  font-size: 10px;
+  .roe-icon{
+    width: 13px;
+    height: 13px;
+    margin-right: 6px ;
+  }
+}
+:deep(.el-tag__content){
+  display: flex;
+  align-items: center;
+}
+:deep(.el-tag){
+  background: linear-gradient( 90deg, #AE1E26 0%, #FF392B 100%) !important;
+  border: 0px;
 }
 
 .quick-cards {
@@ -280,14 +312,130 @@ const goToCouponDetail = (coupon) => {
   padding: 16px 0 16px;
 }
 
-.coupon-section .section-header {
-  padding: 0 16px;
-}
-
 .coupon-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 0 16px;
+}
+
+/* ============ 响应式设计 ============ */
+
+/* 平板端 (768px+) */
+@media (min-width: 768px) {
+  .header-section {
+    padding: 20px 24px;
+  }
+
+  .user-avatar {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 24px;
+  }
+
+  .quick-section {
+    margin: 24px 20px;
+  }
+
+  .quick-section :deep(.el-card__body) {
+    padding: 20px;
+  }
+
+  .quick-cards {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .quick-card {
+    padding: 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    justify-content: center;
+  }
+
+  .banner-section {
+    margin: 0 24px 20px;
+    padding: 20px 24px;
+  }
+
+  .banner-title {
+    font-size: var(--font-md);
+  }
+
+  .coupon-section {
+    margin: 0 24px 20px;
+  }
+
+  .coupon-section :deep(.el-card__body) {
+    padding: 20px 0;
+  }
+
+  .section-header_bottom {
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+
+  .coupon-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+  }
+}
+
+/* 桌面端 (992px+) */
+@media (min-width: 992px) {
+  .header-section {
+    padding: 24px;
+  }
+
+  .quick-section {
+    margin: 28px 16px;
+  }
+
+  .quick-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .quick-card {
+    flex-direction: row;
+    text-align: left;
+    padding: 14px;
+  }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+
+  .card-title {
+    justify-content: flex-start;
+  }
+
+  .banner-section {
+    margin: 0 20px 20px;
+  }
+
+  .coupon-section {
+    margin: 0 20px 20px;
+  }
+
+  .section-header_bottom {
+    padding: 0 16px;
+  }
+
+  .coupon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 16px;
+  }
 }
 </style>

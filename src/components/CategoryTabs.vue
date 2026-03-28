@@ -7,7 +7,9 @@
       :class="{ active: modelValue === index }"
       @click="handleSelect(index)"
     >
-      <span class="tab-icon" v-if="tab.icon">{{ tab.icon }}</span>
+      <span class="tab-icon" v-if="tab.icon">
+        <img :src="tab.icon" class="tab-icon-image" />
+      </span>
       <span class="tab-name">{{ tab.name }}</span>
     </div>
   </div>
@@ -73,6 +75,14 @@ const handleSelect = (index) => {
 
 .tab-icon {
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.tab-icon-image {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .tab-name {
