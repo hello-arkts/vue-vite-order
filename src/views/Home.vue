@@ -62,15 +62,21 @@
     <el-card class="coupon-section" shadow="never">
       <div class="section-header_bottom">
         <span class="section-title">精选优惠</span>
-        <el-button text type="primary" @click="goToCouponList">
-          查看所有<el-icon><ArrowRight /></el-icon>
-        </el-button>
+        <span type="primary" @click="goToCouponList" style="display: flex; align-items: center;">
+          <span>
+            查看所有
+          </span>
+          <el-icon><ArrowRight /></el-icon>
+        </span>
       </div>
 
       <!-- 分类标签 -->
-      <CategoryTabs 
+      <CategoryTabs
         v-model="activeCategory" 
-        :tabs="categories" 
+        :tabs="categories"
+        :paddingNum="0"
+        bgColor="var(--bg-transparent)"
+        :isWrap="true"
       />
 
       <!-- 优惠券列表 -->
@@ -93,6 +99,7 @@ import { Present, TopRight, Calendar, ArrowRight } from '@element-plus/icons-vue
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import { categories,quickCards } from '../unit/curatedList.js'
+import {valueEquals} from "element-plus";
 
 
 const router = useRouter()
@@ -170,7 +177,7 @@ const goToCouponDetail = (coupon) => {
   background: transparent;
 }
 :deep(.el-card__body){
-  padding: 0;
+  padding: 0 !important;
 }
 
 .section-header {
@@ -185,7 +192,6 @@ const goToCouponDetail = (coupon) => {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
-  padding: 0 16px;
 }
 
 .section-title {
@@ -229,7 +235,7 @@ const goToCouponDetail = (coupon) => {
   gap: 8px;
   padding: 12px;
   background: var(--bg-page);
-  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.08);
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
   border-radius: 22px 22px 22px 22px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -274,7 +280,7 @@ const goToCouponDetail = (coupon) => {
 
 /* Banner */
 .banner-section {
-  margin: 0 16px 16px;
+  margin: 0 16px 0 16px;
   padding: 16px;
   background: linear-gradient( 90deg, #FF6464 0%, #5F0FFF 100%);
   border-radius: 21px 21px 21px 21px;
@@ -323,13 +329,12 @@ const goToCouponDetail = (coupon) => {
 
 /* 精选优惠 */
 .coupon-section {
+  padding: 25px 0 16px ;
   margin: 0 16px 16px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-}
-
-.coupon-section :deep(.el-card__body) {
-  padding: 16px 0 16px;
+  background: transparent;
+  border: none;
 }
 
 .coupon-grid {
@@ -387,11 +392,12 @@ const goToCouponDetail = (coupon) => {
   }
 
   .coupon-section {
-    margin: 0 24px 20px;
-  }
-
-  .coupon-section :deep(.el-card__body) {
-    padding: 20px 0;
+    padding: 25px 0 16px ;
+    margin: 0 16px 16px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: transparent;
+    border: none;
   }
 
   .section-header_bottom {
@@ -426,6 +432,9 @@ const goToCouponDetail = (coupon) => {
     text-align: left;
     padding: 14px;
   }
+  :deep(.el-card__body){
+    padding: 0;
+  }
 
   .card-icon {
     font-size: 24px;
@@ -441,7 +450,12 @@ const goToCouponDetail = (coupon) => {
   }
 
   .coupon-section {
-    margin: 0 20px 20px;
+    padding: 25px 0 16px ;
+    margin: 0 16px 16px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: transparent;
+    border: none;
   }
 
   .section-header_bottom {

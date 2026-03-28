@@ -7,6 +7,7 @@
   /* 背景色 */
   --bg-page: #f5f5f5;
   --bg-card: #ffffff;
+  --bg-transparent: transparent;
   --bg-gradient-pink: linear-gradient(180deg, #ffb6c1 0%, #ffd1dc 100%);
   --bg-gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --bg-gradient-yellow: linear-gradient( 0deg, #FBF9ED 0%, #FFAD73 100%);

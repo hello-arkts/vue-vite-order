@@ -1,5 +1,5 @@
 <template>
-  <div class="category-tabs">
+  <div class="category-tabs" :class="{ 'wrap-mode': isWrap }" :style="{ padding: paddingNum + 'px', background: bgColor }">
     <div 
       v-for="(tab, index) in tabs" 
       :key="index"
@@ -24,6 +24,18 @@ const props = defineProps({
   modelValue: {
     type: Number,
     default: 0
+  },
+  paddingNum: {
+    type: Number,
+    default: 12
+  },
+  bgColor: {
+    type: String,
+    default: 'var(--bg-card)'
+  },
+  isWrap: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -48,12 +60,19 @@ const handleSelect = (index) => {
   display: none;
 }
 
+/* 换行模式 */
+.category-tabs.wrap-mode {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
 .tab-item {
+  width: 112px;
+  height: 34px;
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 8px 16px;
-  border-radius: var(--radius-full);
   background: var(--bg-page);
   white-space: nowrap;
   cursor: pointer;
@@ -61,6 +80,9 @@ const handleSelect = (index) => {
   font-size: var(--font-sm);
   color: var(--text-secondary);
   border: 1px solid transparent;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
+  border-radius: 22px 22px 22px 22px;
 }
 
 .tab-item:active {
