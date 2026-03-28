@@ -1,15 +1,18 @@
 <template>
   <div class="coupon-list-page">
-    <!-- 顶部导航 -->
-    <NavBar title="精选优惠" />
+    <!-- 固定顶部区域 -->
+    <div class="fixed-header">
+      <!-- 顶部导航 -->
+      <NavBar title="精选优惠" />
 
-    <!-- 分类标签 -->
-    <CategoryTabs
-        v-model="activeCategory"
-        :tabs="categories"
-        :paddingNum="17"
-        bgColor="var(--bg-transparent)"
-    />
+      <!-- 分类标签 -->
+      <CategoryTabs
+          v-model="activeCategory"
+          :tabs="categories"
+          :paddingNum="17"
+          bgColor="var(--bg-transparent)"
+      />
+    </div>
 
     <!-- 优惠券列表 -->
     <div class="coupon-content">
@@ -53,6 +56,30 @@ const coupons = ref([
   { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
   { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
   { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
+  { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 },
+  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
+  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
+  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
+  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
+  { id: 5, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
+  { id: 6, name: 'KFC Thailand', discount: '满100减10', category: 0 },
+  { id: 7, name: 'Bar.Yard', discount: '满500减100', category: 0 },
+  { id: 8, name: "McDonald's", discount: '满500减100', category: 0 },
+  { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
+  { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
+  { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
+  { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 },
+  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
+  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
+  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
+  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
+  { id: 5, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
+  { id: 6, name: 'KFC Thailand', discount: '满100减10', category: 0 },
+  { id: 7, name: 'Bar.Yard', discount: '满500减100', category: 0 },
+  { id: 8, name: "McDonald's", discount: '满500减100', category: 0 },
+  { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
+  { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
+  { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
   { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 }
 ])
 
@@ -71,8 +98,21 @@ const goToCouponDetail = (coupon) => {
   background: #FBF9ED;
 }
 
+/* 固定顶部区域 */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #FBF9ED;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
 .coupon-content {
   padding: 0 16px;
+  padding-top: 118px; /* 预留固定头部的高度 */
   min-height: calc(100vh - 100px);
 }
 
@@ -115,8 +155,13 @@ const goToCouponDetail = (coupon) => {
 
 /* 平板端 (768px+) */
 @media (min-width: 768px) {
+  .fixed-header {
+    max-width: 720px;
+  }
+  
   .coupon-content {
     padding: 20px 24px;
+    padding-top: 160px;
   }
   
   .coupon-grid {
@@ -127,8 +172,13 @@ const goToCouponDetail = (coupon) => {
 
 /* 桌面端 (992px+) */
 @media (min-width: 992px) {
+  .fixed-header {
+    max-width: 480px;
+  }
+  
   .coupon-content {
     padding: 20px;
+    padding-top: 150px;
   }
   
   .coupon-grid {
