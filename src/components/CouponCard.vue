@@ -6,8 +6,8 @@
     @click="handleCardClick"
   >
     <div class="card-content">
-      <div class="card-logo">
-        <el-avatar :size="35" style="height: 35px">
+      <div class="card-logo" style="height: 35px">
+        <el-avatar :size="35">
           <img :src="coupon.shop?.logo" />
         </el-avatar>
       </div>
@@ -40,13 +40,9 @@
       <!-- 二维码区域 -->
       <div class="qrcode-section">
         <div class="qrcode-box">
-          <div class="qrcode-placeholder">
-            <div class="qr-pattern">
-              <div v-for="i in 81" :key="i" class="qr-cell" :class="{ filled: qrPattern[i-1] }"></div>
-            </div>
-          </div>
+          <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
         </div>
-        <div class="coupon-code">券码 {{ couponCode }}</div>
+        <div class="coupon-code" v-if="selectedCoupon.code">券码 {{ selectedCoupon.code }}</div>
         <div class="coupon-tip">请向店员出示此二维码进行核销</div>
       </div>
 
@@ -61,11 +57,11 @@
             @click="activeCoupon(type, index)"
           >
             <div class="type-header">
-              <span class="type-name">{{ type.name }}</span>
-              <span class="type-value">฿{{ type.value }}</span>
+              <span class="type-name">{{ couponType(coupon) }}</span>
+              <span class="type-value">฿{{ coupon.amount }}</span>
             </div>
-            <div class="type-desc">{{ type.description }}</div>
-            <div class="type-expire">有效期 {{ type.expireDate }}</div>
+            <div class="type-desc">{{ couponAmount(coupon) }}</div>
+            <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div>
           </div>
         </div>
       </div>
@@ -94,10 +90,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown,Position } from '@element-plus/icons-vue'
-import {getCouponDetail} from "@/api/index.js";
+import {getCouponDetail} from "@/api/index.js"
+import QRCode from 'qrcode'
 
 const props = defineProps({
   coupon: {
@@ -114,43 +111,56 @@ const emit = defineEmits(['click'])
 
 const drawerVisible = ref(false)
 const activeCouponType = ref(0)
+const selectedCoupon = ref({})
+const qrCanvas = ref(null)
+// 券类型数据
+const couponTypes = ref([])
 
-// 生成券码
-const couponCode = computed(() => {
-  return String(props.coupon.id).padStart(7, '0')
-})
 
 // 优惠券金额
 const couponAmount = (coupon) => {
   if (coupon.minPoint && coupon.minPoint > 0) {
-    return '满' + coupon.minPoint + '减' + coupon.amount
+    return '满   ' +'฿'+ coupon.minPoint + '减    ' +'฿'+ coupon.amount
   } else {
-    return coupon.amount +'代金券'
+    return '฿'+ coupon.amount +'    代金券'
   }
 }
 
-// 券类型数据
-const couponTypes = ref([
-  { name: '满减券', value: '100', description: '满500减฿100', expireDate: '2026-06-30' },
-  { name: '现金券', value: '50', description: '全场消费减฿50', expireDate: '2026-06-30' },
-  { name: '现金券', value: '30', description: '全场消费减฿30', expireDate: '2026-06-30' }
-])
+// 优惠券类型
+const couponType = (coupon) => {
+  if (coupon.minPoint && coupon.minPoint > 0) {
+    return '满减券'
+  } else {
+    return '代金券'
+  }
+}
 
 // 门店地址
 const storeAddress = '30 ซอย ราษฎร์พัฒนา 32 แขวง หัวหมาก เขต บางกะปิ\nกรุงเทพมหานคร 10220'
 
-// 生成二维码图案
-const qrPattern = ref([])
-const generateQrPattern = () => {
-  qrPattern.value = Array.from({ length: 81 }, () => Math.random() > 0.5)
-  const corners = [0, 1, 2, 6, 7, 8, 9, 18, 72, 73, 74, 78, 79, 80]
-  corners.forEach(i => qrPattern.value[i] = true)
+// 生成二维码
+const generateQrCode = async () => {
+  await nextTick()
+  if (qrCanvas.value && selectedCoupon.value.qrcode) {
+    try {
+      await QRCode.toCanvas(qrCanvas.value, selectedCoupon.value.qrcode, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      })
+    } catch (error) {
+      console.error('生成二维码失败:', error)
+    }
+  }
 }
 
 // 打开抽屉时生成二维码
-watch(drawerVisible, (val) => {
+watch(selectedCoupon, (val) => {
   if (val) {
-    generateQrPattern()
+    generateQrCode()
   }
 })
 
@@ -174,6 +184,7 @@ const handleNavigation = () => {
 
 const activeCoupon = (row, index) => {
   activeCouponType.value = index
+  selectedCoupon.value = row || {}
 }
 
 //获取优惠券详情
@@ -183,7 +194,8 @@ const getCouponDetails = async () => {
   try {
     const res = await getCouponDetail(formData)
     if (res.code === 200) {
-      ElMessage.success('优惠券详情获取成功')
+      couponTypes.value = res.data.couponList || []
+      selectedCoupon.value = couponTypes.value[0] || {}
     } else {
       ElMessage.error(res.msg || '优惠券详情获取失败')
     }
@@ -328,29 +340,10 @@ const getCouponDetails = async () => {
   margin-bottom: 12px;
 }
 
-.qrcode-placeholder {
+.qrcode-canvas {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.qr-pattern {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 2px;
-  width: 100%;
-  height: 100%;
-}
-
-.qr-cell {
-  background: white;
-  border-radius: 1px;
-}
-
-.qr-cell.filled {
-  background: #000;
+  display: block;
 }
 
 .coupon-code {
@@ -383,11 +376,12 @@ const getCouponDetails = async () => {
 }
 
 .type-card {
+  width: 118px;
+  height: 87px;
+  background: #FFE2D7;
+  border-radius: 16px 16px 16px 16px;
   min-width: 140px;
   padding: 12px;
-  background: #ffe2d7;
-  border: 2px solid transparent;
-  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.25s ease;
   flex-shrink: 0;
@@ -398,41 +392,52 @@ const getCouponDetails = async () => {
 }
 
 .type-card.active {
-  border-color: var(--primary-red);
+  border: 2px solid #FF3957;
 }
 
 .type-header {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .type-name {
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   color: var(--text-primary);
-  font-weight: 500;
+  font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
+  font-weight: 600;
+  font-style: normal;
+  text-transform: none;
 }
 
 .type-value {
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   color: var(--text-primary);
-  font-weight: 700;
-}
-
-.type-card.active .type-value {
-  color: var(--primary-red);
+  font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
+  font-weight: 600;
+  font-style: normal;
+  text-transform: none;
 }
 
 .type-desc {
-  font-size: var(--font-xs);
-  color: var(--primary-red);
-  margin-bottom: 8px;
+  font-size: var(--font-sm);
+  margin-bottom: 2px;
+  font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
+  font-weight: 500;
+  color: #FF3957;
+  text-align: center;
+  font-style: normal;
+  text-transform: none;
 }
 
 .type-expire {
   font-size: var(--font-xs);
-  color: var(--text-tertiary);
+  color: var(--text-primary);
+  font-style: normal;
+  text-align: center;
+  text-transform: none;
 }
 
 /* 门店地址 */
