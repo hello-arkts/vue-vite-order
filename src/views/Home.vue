@@ -3,9 +3,17 @@
     <!-- 顶部用户区域 -->
     <div class="header-section">
       <div class="user-info">
-        <el-avatar :size="48" class="user-avatar">
-          <img :src="`https://api.dicebear.com/8.x/micah/svg?seed=${ avatarSeed}`" alt="avatar" />
-        </el-avatar>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <el-avatar :size="48" class="user-avatar">
+            <img :src="`https://api.dicebear.com/8.x/micah/svg?seed=${ avatarSeed}`" alt="avatar" />
+          </el-avatar>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="login" v-if="!isLoggedIn">登录</el-dropdown-item>
+              <el-dropdown-item command="logout" v-else type="danger">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <div class="user-info-title">
           <img src="../assets/icons/red.svg" alt="抽奖" class="lottery-btn">
           <span class="lottery-text">抽奖</span>
@@ -101,11 +109,13 @@ import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
+import {ElMessage} from "element-plus";
 
 
 const router = useRouter()
 const activeCategory = ref(0)
 const avatarSeed = ref( localStorage.getItem('userInfo') || Math.floor(Math.random() * 10000))
+const isLoggedIn = ref('')
 
 const filteredCoupons = ref([])
 
@@ -128,6 +138,17 @@ const getCouponLists = async (type = 1) => {
 
 const goToCouponList = () => {
   router.push('/coupons')
+}
+
+const handleCommand = (command) => {
+  isLoggedIn.value = localStorage.getItem('token')
+  if (command === 'login') {
+    // 打开登录抽屉
+  } else if (command === 'logout') {
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('token')
+    ElMessage.success('退出登录成功')
+  }
 }
 
 // 获取店家优惠券
