@@ -101,15 +101,47 @@
         导航到店
       </el-button>
     </div>
+
+    <!-- 地图应用选择抽屉 -->
+    <el-drawer
+      v-model="mapDialogVisible"
+      direction="btt"
+      size="60%"
+      :show-close="true"
+      :with-header="false"
+      class="map-drawer"
+      style="border-radius: 26px 26px 0 0;background: #F9F5F6;"
+    >
+      <div class="map-options">
+        <div
+          v-for="mapApp in mapApps"
+          :key="mapApp.id"
+          class="map-option"
+          @click="openMapAppHandler(mapApp)"
+        >
+          <div class="map-icon">
+            <img :src="mapApp.icon" :alt="mapApp.name" />
+          </div>
+          <div class="map-info">
+            <div class="map-name">{{ mapApp.name }}</div>
+            <div class="map-desc">{{ mapApp.description }}</div>
+          </div>
+          <el-icon class="arrow-icon"><ArrowRight /></el-icon>
+        </div>
+      </div>
+    </el-drawer>
   </el-drawer>
 </template>
 
 <script setup>
 import { ref, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import { ArrowDown,Position } from '@element-plus/icons-vue'
+import { ArrowDown, Position, ArrowRight } from '@element-plus/icons-vue'
 import {getCouponDetail} from "@/api/index.js"
+import {mapApps} from "@/utils/curatedList.js"
+
 import QRCode from 'qrcode'
+import { openMapApp } from '@/utils/openMap.js'
 
 const props = defineProps({
   coupon: {
@@ -127,9 +159,9 @@ const emit = defineEmits(['click'])
 const drawerVisible = ref(false)
 const activeCouponType = ref(props.coupon.id)
 const qrCanvas = ref(null)
-// 券类型数据
+const mapDialogVisible = ref(false)
+
 const couponTypes = ref([])
-// 门店地址
 const addressDropdownVisible = ref(false)
 const selectedStoreId = ref(0)
 const selectedStoreAddress = ref('')
@@ -202,7 +234,18 @@ const copyAddress = () => {
 }
 
 const handleNavigation = () => {
-  ElMessage.success('正在打开导航...')
+  if (!selectedStoreAddress.value) {
+    ElMessage.warning('请先选择门店地址')
+    return
+  }
+  mapDialogVisible.value = true
+}
+
+const openMapAppHandler = async (mapApp) => {
+  const success = await openMapApp(mapApp, couponTypes.value.shopList, selectedStoreId.value, selectedStoreAddress.value)
+  if (success) {
+    mapDialogVisible.value = false
+  }
 }
 
 const activeCoupon = (row, index) => {
@@ -700,6 +743,119 @@ const getCouponDetails = async (id) => {
   
   .nav-btn {
     height: 48px;
+  }
+}
+
+/* 地图选择抽屉样式 */
+.map-drawer :deep(.el-drawer) {
+  border-radius: 26px 26px 0 0;
+  overflow: hidden;
+  background: #F9F5F6;
+}
+
+.map-drawer :deep(.el-drawer__body) {
+  padding: 24px 24px 24px;
+  background: #F9F5F6;
+}
+
+.map-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.map-option {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.map-option:hover {
+  border-color: #5668F4;
+  background: #F5F7FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(86, 104, 244, 0.15);
+}
+
+.map-option:active {
+  transform: scale(0.98);
+}
+
+.map-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.map-info {
+  flex: 1;
+  margin-left: 12px;
+  min-width: 0;
+}
+
+.map-name {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.map-desc {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.arrow-icon {
+  font-size: 20px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.map-option:hover .arrow-icon {
+  color: #5668F4;
+  transform: translateX(4px);
+}
+
+/* 地图抽屉响应式 */
+@media (min-width: 768px) {
+  .map-option {
+    padding: 20px;
+  }
+  
+  .map-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .map-icon img {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .map-name {
+    font-size: var(--font-md);
+  }
+  
+  .map-desc {
+    font-size: var(--font-base);
   }
 }
 </style>

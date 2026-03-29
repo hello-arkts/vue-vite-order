@@ -2,7 +2,7 @@
   <div class="home-page">
     <!-- 顶部用户区域 -->
     <div class="header-section">
-      <div class="user-info">
+      <div class="user-info" @click="handleAvatarClick">
         <el-dropdown trigger="click" @command="handleCommand">
           <el-avatar :size="48" class="user-avatar">
             <img :src="`https://api.dicebear.com/8.x/micah/svg?seed=${ avatarSeed}`" alt="avatar" />
@@ -98,6 +98,9 @@
         />
       </div>
     </el-card>
+
+    <!-- 登录抽屉 -->
+    <LoginDrawer v-model="loginDrawerVisible" @login-success="handleLoginSuccess" />
   </div>
 </template>
 
@@ -107,6 +110,7 @@ import { useRouter } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
+import LoginDrawer from '../components/LoginDrawer.vue'
 import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
 import {ElMessage} from "element-plus";
@@ -116,6 +120,7 @@ const router = useRouter()
 const activeCategory = ref(0)
 const avatarSeed = ref( localStorage.getItem('userInfo') || Math.floor(Math.random() * 10000))
 const isLoggedIn = ref('')
+const loginDrawerVisible = ref(false)
 
 const filteredCoupons = ref([])
 
@@ -140,10 +145,15 @@ const goToCouponList = () => {
   router.push('/coupons')
 }
 
-const handleCommand = (command) => {
+// 点击用户头像
+const handleAvatarClick = () => {
+  console.log('handleAvatarClick')
   isLoggedIn.value = localStorage.getItem('token')
+}
+
+const handleCommand = (command) => {
   if (command === 'login') {
-    // 打开登录抽屉
+    loginDrawerVisible.value = true
   } else if (command === 'logout') {
     localStorage.removeItem('userInfo')
     localStorage.removeItem('token')

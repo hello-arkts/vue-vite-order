@@ -19,4 +19,11 @@ const countryCodes = [
   { code: '+66', name: '泰国', icon: new URL('../assets/icons/th.svg', import.meta.url).href },
 ]
 
-export {categories, quickCards, countryCodes}
+const mapApps = [
+  { id: 'google', name: 'Google Maps', description: 'Google 地图', icon: new URL('../assets/icons/gg.svg', import.meta.url).href },
+  { id: 'gaode', name: '高德地图', description: 'Gaode Maps', icon: new URL('../assets/icons/gd.svg', import.meta.url).href },
+  { id: 'baidu', name: '百度地图', description: 'Baidu Maps', icon: new URL('../assets/icons/bd.svg', import.meta.url).href },
+  { id: 'tencent', name: '腾讯地图', description: 'Tencent Maps', icon: new URL('../assets/icons/tx.svg', import.meta.url).href },
+]
+
+export {categories, quickCards, countryCodes, mapApps}
