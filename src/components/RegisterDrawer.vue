@@ -150,7 +150,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
-import {getCode, register, setPassword} from '@/api/loginServe.js'
+import {getCode, registerAccount, setPassword} from '@/api/loginServe.js'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
@@ -272,8 +272,20 @@ const handleSubmit = async () => {
       ElMessage.error('请输入正确的验证码')
       return
     }
-    // 进入第二步
-    currentStep.value = 2
+    // 注册
+    const formData = new FormData()
+    formData.append('telephone', registerForm.value.phone)
+    formData.append('phoneCode', selectedCountry.value.code)
+    formData.append('authCode', registerForm.value.code)
+    formData.append('invitationCode', 0)
+
+    const response = await registerAccount(formData)
+    if (response.code === 200) {
+      // 进入第二步
+      currentStep.value = 2
+    } else {
+      ElMessage.error(response.msg || '注册失败')
+    }
   } else {
     // 第二步：提交注册
     if (!isPasswordValid.value) {
@@ -377,7 +389,6 @@ onUnmounted(() => {
 }
 
 .drawer-content {
-  padding: 32px 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -675,9 +686,7 @@ onUnmounted(() => {
 
 /* 响应式设计 */
 @media (min-width: 768px) {
-  .drawer-content {
-    padding: 40px 32px;
-  }
+  .drawer-content {}
   
   .back-btn {
     top: 40px;

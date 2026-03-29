@@ -153,10 +153,11 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    const response = await login({
-      phone: loginForm.value.phone,
-      password: loginForm.value.password
-    })
+    const formData = new FormData()
+    formData.append('telephone', loginForm.value.phone)
+    formData.append('password', loginForm.value.password)
+    formData.append('phoneCode', selectedCountry.value.code)
+    const response = await login(formData)
 
     if (response.code === 200) {
       // 保存 token

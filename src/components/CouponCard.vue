@@ -31,10 +31,10 @@
       <!-- 商户信息 -->
       <div class="merchant-info">
         <el-avatar :size="61">
-          <img :src="coupon.shop.logo" />
+          <img :src="couponTypes.shop?.logo || coupon.shop?.logo" />
         </el-avatar>
-        <h2 class="merchant-name">{{ coupon.name }}</h2>
-        <div class="discount-text">{{ coupon.discount }}</div>
+        <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
+        <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
       </div>
 
       <!-- 二维码区域 -->
@@ -42,7 +42,7 @@
         <div class="qrcode-box">
           <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
         </div>
-        <div class="coupon-code" v-if="selectedCoupon.code">券码 {{ selectedCoupon.code }}</div>
+        <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div>
         <div class="coupon-tip">请向店员出示此二维码进行核销</div>
       </div>
 
@@ -50,17 +50,17 @@
       <div class="coupon-types">
         <div class="types-scroll">
           <div 
-            v-for="(type, index) in couponTypes" 
+            v-for="(type, index) in couponTypes.couponList"
             :key="index"
             class="type-card"
-            :class="{ active: activeCouponType === index }"
+            :class="{ active: activeCouponType === type.id }"
             @click="activeCoupon(type, index)"
           >
             <div class="type-header">
-              <span class="type-name">{{ couponType(coupon) }}</span>
-              <span class="type-value">฿{{ coupon.amount }}</span>
+              <span class="type-name">{{ couponType(type) }}</span>
+              <span class="type-value">฿{{ type.amount }}</span>
             </div>
-            <div class="type-desc">{{ couponAmount(coupon) }}</div>
+            <div class="type-desc">{{ couponAmount(type) }}</div>
             <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div>
           </div>
         </div>
@@ -125,7 +125,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const drawerVisible = ref(false)
-const activeCouponType = ref(0)
+const activeCouponType = ref(props.coupon.id)
 const selectedCoupon = ref({})
 const qrCanvas = ref(null)
 // 券类型数据
@@ -194,7 +194,7 @@ const handleCardClick = () => {
 }
 
 const openDrawer = () => {
-  getCouponDetails()
+  getCouponDetails(props.coupon.id)
   drawerVisible.value = true
 }
 
@@ -208,19 +208,20 @@ const handleNavigation = () => {
 }
 
 const activeCoupon = (row, index) => {
-  activeCouponType.value = index
+  activeCouponType.value = row.id
   selectedCoupon.value = row || {}
+  getCouponDetails(row.id)
 }
 
 //获取优惠券详情
-const getCouponDetails = async () => {
+const getCouponDetails = async (id) => {
   const formData = new FormData()
-  formData.append('couponId', props.coupon.id)
+  formData.append('couponId', id)
   try {
     const res = await getCouponDetail(formData)
     if (res.code === 200) {
-      couponTypes.value = res.data.couponList || []
-      selectedCoupon.value = couponTypes.value[0] || {}
+      couponTypes.value = res.data || []
+      selectedCoupon.value.couponList = couponTypes.value[0] || {}
     } else {
       ElMessage.error(res.msg || '优惠券详情获取失败')
     }

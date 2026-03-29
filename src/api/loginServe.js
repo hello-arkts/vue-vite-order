@@ -11,7 +11,7 @@ export const register = (params = {}) => {
  * 登录
  */
 export const login = (params = {}) => {
-    return post('/mall-portal/member/login', params)
+    return post('/mall-portal/sso/login', params)
 }
 
 /**
