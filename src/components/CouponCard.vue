@@ -166,9 +166,9 @@ const selectStore = (store, index) => {
 // 生成二维码
 const generateQrCode = async () => {
   await nextTick()
-  if (qrCanvas.value && selectedCoupon.value.qrcode) {
+  if (qrCanvas.value && couponTypes.value.qrcode) {
     try {
-      await QRCode.toCanvas(qrCanvas.value, selectedCoupon.value.qrcode, {
+      await QRCode.toCanvas(qrCanvas.value, couponTypes.value.qrcode, {
         width: 200,
         margin: 2,
         color: {
@@ -183,7 +183,7 @@ const generateQrCode = async () => {
 }
 
 // 打开抽屉时生成二维码
-watch(selectedCoupon, (val) => {
+watch(couponTypes, (val) => {
   if (val) {
     generateQrCode()
   }
@@ -353,7 +353,7 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .qrcode-box {
@@ -389,7 +389,7 @@ const getCouponDetails = async (id) => {
 
 /* 券类型选择 */
 .coupon-types {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .types-scroll {
