@@ -21,7 +21,7 @@
   <el-drawer
     v-model="drawerVisible"
     direction="btt"
-    size="85%"
+    size="95%"
     :show-close="false"
     :with-header="false"
     class="coupon-drawer"
