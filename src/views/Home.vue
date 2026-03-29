@@ -96,7 +96,7 @@
 <script setup>
 import {ref, computed, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
-import { Present, TopRight, Calendar, ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import { categories,quickCards } from '../unit/curatedList.js'
@@ -396,22 +396,30 @@ onMounted(() => {
 
   .quick-cards {
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    gap: 8px;
   }
 
   .quick-card {
-    padding: 16px;
-    flex-direction: column;
-    text-align: center;
+    width: 100%;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--bg-page);
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
+    border-radius: 22px 22px 22px 22px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .card-desc{
+    font-size: var(--font-xs);
   }
 
   .card-icon {
     font-size: 28px;
     margin-bottom: 8px;
-  }
-
-  .card-title {
-    justify-content: center;
   }
 
   .banner-section {
