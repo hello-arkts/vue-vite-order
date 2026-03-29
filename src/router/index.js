@@ -12,9 +12,9 @@ const routes = [
     component: () => import('../views/CouponList.vue')
   },
   {
-    path: '/coupon/:id',
-    name: 'CouponDetail',
-    component: () => import('../views/CouponDetail.vue')
+    path: '/jump',
+    name: 'Jump',
+    component: () => import('../views/JumpPage.vue')
   }
 ]
 

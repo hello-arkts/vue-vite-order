@@ -14,7 +14,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <div class="user-info-title">
+        <div class="user-info-title" @click="goToJump">
           <img src="../assets/icons/red.svg" alt="抽奖" class="lottery-btn">
           <span class="lottery-text">抽奖</span>
         </div>
@@ -31,7 +31,7 @@
         </el-tag>
       </div>
       <div class="quick-cards">
-        <div class="quick-card" v-for="card in quickCards" :key="card.title">
+        <div class="quick-card" v-for="card in quickCards" :key="card.title" @click="goToJump">
           <img class="card-icon" :src="card.icon" :alt="card.title" />
           <div class="card-content">
             <div class="card-title">
@@ -45,7 +45,7 @@
     </el-card>
 
     <!-- 活动Banner -->
-    <div class="banner-section">
+    <div class="banner-section" @click="goToJump">
       <div class="banner">
         <div class="banner-left">
           <img src="../assets/icons/tq.svg" alt="flag" style="width: 24px; height: 24px;" />
@@ -129,22 +129,9 @@ const registerDrawerVisible = ref(false)
 
 const filteredCoupons = ref([])
 
-const getCouponLists = async (type = 1) => {
-  try {
-    const formData = new FormData()
-    formData.append('type', type)
-    formData.append('pageNum', 1)
-    formData.append('pageSize', 999)
-    const response = await getCouponList(formData)
-    if (response.code === 200) {
-      filteredCoupons.value = response.data.list || []
-    }
-  } catch (error) {
-    console.error('获取优惠券列表失败:', error)
-  }
+const goToJump = () => {
+  router.push('/jump')
 }
-
-
 
 const goToCouponList = () => {
   router.push('/coupons')
@@ -163,6 +150,21 @@ const handleCommand = (command) => {
     localStorage.removeItem('userInfo')
     localStorage.removeItem('token')
     ElMessage.success('退出登录成功')
+  }
+}
+
+const getCouponLists = async (type = 1) => {
+  try {
+    const formData = new FormData()
+    formData.append('type', type)
+    formData.append('pageNum', 1)
+    formData.append('pageSize', 999)
+    const response = await getCouponList(formData)
+    if (response.code === 200) {
+      filteredCoupons.value = response.data.list || []
+    }
+  } catch (error) {
+    console.error('获取优惠券列表失败:', error)
   }
 }
 
