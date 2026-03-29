@@ -47,7 +47,6 @@
               v-model="registerForm.phone"
               placeholder="请输入手机号"
               class="phone-input"
-              maxlength="11"
             />
             <img :src="selectedCountry.icon" class="input-icon flag-icon" />
           </div>

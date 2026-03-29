@@ -67,6 +67,7 @@
         type="primary"
         size="large"
         class="login-btn"
+        :class="{ 'login-btn-active': isFormValid }"
         @click="handleLogin"
         :loading="loading"
       >
@@ -113,6 +114,31 @@ const loginForm = ref({
 const showPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
+
+// 手机号验证（与注册页面保持一致）
+const isPhoneValid = computed(() => {
+  const phone = loginForm.value.phone.trim()
+  // 泰国手机号：9位数字，以0开头
+  if (selectedCountry.value.code === '+66') {
+    return /^0\d{9}$/.test(phone)
+  }
+  // 中国手机号：11位数字，以1开头
+  if (selectedCountry.value.code === '+86') {
+    return /^1\d{10}$/.test(phone)
+  }
+  // 美国手机号：10位数字
+  if (selectedCountry.value.code === '+1') {
+    return /^\d{10}$/.test(phone)
+  }
+  // 默认至少6位数字
+  return /^\d{6,}$/.test(phone)
+})
+
+// 计算属性：判断表单是否有效（手机号格式正确且密码至少8位）
+const isFormValid = computed(() => {
+  const isPasswordValid = loginForm.value.password && loginForm.value.password.length >= 8
+  return isPhoneValid.value && isPasswordValid
+})
 
 // 默认选中泰国
 const selectedCountry = ref(countryCodes.find(c => c.code === '+86') || countryCodes[0])
@@ -358,6 +384,15 @@ const handleLogin = async () => {
 
 .login-btn:hover {
   background: #EEEEEE;
+}
+
+.login-btn-active {
+  background: #E53935 !important;
+  color: #FFFFFF !important;
+}
+
+.login-btn-active:hover {
+  background: #D32F2F !important;
 }
 
 .register-link {
