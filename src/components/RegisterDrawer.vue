@@ -55,7 +55,7 @@
         <!-- 验证码输入 -->
         <div class="input-group">
           <div class="code-input-wrapper">
-            <img src="../assets/icons/mima.svg" class="input-icon code-left-icon" />
+            <img src="../assets/icons/yzm.svg" class="input-icon code-left-icon" />
             <el-input
               v-model="registerForm.code"
               placeholder="请输入验证码"
@@ -81,14 +81,11 @@
             <img src="../assets/icons/mima.svg" class="input-icon password-left-icon" />
             <el-input
               v-model="registerForm.password"
-              :type="showPassword ? 'text' : 'password'"
+              type="password"
               placeholder="请输入密码"
               class="password-input"
+              show-password
             />
-            <div class="eye-icon-wrapper" @click="showPassword = !showPassword">
-              <img v-if="showPassword" src="../assets/icons/yy.svg" class="eye-icon-img" />
-              <img v-else src="../assets/icons/yn.svg" class="eye-icon-img" />
-            </div>
           </div>
         </div>
         
@@ -98,14 +95,11 @@
             <img src="../assets/icons/mima.svg" class="input-icon password-left-icon" />
             <el-input
               v-model="registerForm.confirmPassword"
-              :type="showConfirmPassword ? 'text' : 'password'"
+              type="password"
               placeholder="请再次输入密码"
               class="password-input"
+              show-password
             />
-            <div class="eye-icon-wrapper" @click="showConfirmPassword = !showConfirmPassword">
-              <img v-if="showConfirmPassword" src="../assets/icons/yy.svg" class="eye-icon-img" />
-              <img v-else src="../assets/icons/yn.svg" class="eye-icon-img" />
-            </div>
           </div>
         </div>
         
@@ -593,20 +587,6 @@ onUnmounted(() => {
 
 .password-input :deep(.el-input__inner::placeholder) {
   color: #999999;
-}
-
-.eye-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.eye-icon-img {
-  width: 20px;
-  height: 20px;
 }
 
 .password-tips {
