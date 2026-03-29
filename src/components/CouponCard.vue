@@ -198,7 +198,7 @@ const openDrawer = () => {
 }
 
 const copyAddress = () => {
-  navigator.clipboard?.writeText(storeAddress)
+  navigator.clipboard?.writeText(selectedStoreAddress.value)
   ElMessage.success('地址已复制')
 }
 
