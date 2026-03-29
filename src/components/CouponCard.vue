@@ -76,10 +76,10 @@
           </div>
           <div class="address-dropdown" v-show="addressDropdownVisible">
             <div
-                v-for="(store, index) in coupon.shopList"
+                v-for="(store, index) in couponTypes.shopList"
                 :key="index"
                 class="address-item"
-                :class="{ 'active': selectedStoreIndex === index }"
+                :class="{ 'active': selectedStoreId === store.id }"
                 @click="selectStore(store, index)"
             >
               <div class="store-name">{{ store.name }}</div>
@@ -126,14 +126,13 @@ const emit = defineEmits(['click'])
 
 const drawerVisible = ref(false)
 const activeCouponType = ref(props.coupon.id)
-const selectedCoupon = ref({})
 const qrCanvas = ref(null)
 // 券类型数据
 const couponTypes = ref([])
 // 门店地址
 const addressDropdownVisible = ref(false)
-const selectedStoreIndex = ref(0)
-const selectedStoreAddress = ref(props.coupon.shopList[0]?.address)
+const selectedStoreId = ref(0)
+const selectedStoreAddress = ref('')
 
 // 优惠券金额
 const couponAmount = (coupon) => {
@@ -158,7 +157,7 @@ const toggleAddressDropdown = () => {
 }
 
 const selectStore = (store, index) => {
-  selectedStoreIndex.value = index
+  selectedStoreId.value = store.id
   selectedStoreAddress.value = store.address
   addressDropdownVisible.value = false
 }
@@ -209,7 +208,6 @@ const handleNavigation = () => {
 
 const activeCoupon = (row, index) => {
   activeCouponType.value = row.id
-  selectedCoupon.value = row || {}
   getCouponDetails(row.id)
 }
 
@@ -221,12 +219,15 @@ const getCouponDetails = async (id) => {
     const res = await getCouponDetail(formData)
     if (res.code === 200) {
       couponTypes.value = res.data || []
-      selectedCoupon.value.couponList = couponTypes.value[0] || {}
+
+      // 初始化默认门店
+      selectedStoreId.value = couponTypes.value.shopList[0]?.id || 0
+      selectedStoreAddress.value = couponTypes.value.shopList[0]?.address || ''
     } else {
-      ElMessage.error(res.msg || '优惠券详情获取失败')
+      ElMessage.error(res.msg || '优惠券获取失败')
     }
   } catch (error) {
-    ElMessage.error(error.message || '优惠券详情获取失败')
+    ElMessage.error(error.message || '优惠券获取失败')
   }
 }
 </script>
