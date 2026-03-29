@@ -191,7 +191,7 @@ onMounted(() => {
 /* 快速通关 */
 .quick-section {
   border: 0;
-  margin: 28px 16px;
+  margin: 28px 16px 18px;
   border-radius: var(--radius-lg);
   background: transparent;
 }
