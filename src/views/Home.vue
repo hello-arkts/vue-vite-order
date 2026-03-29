@@ -40,7 +40,7 @@
     <div class="banner-section">
       <div class="banner">
         <div class="banner-left">
-          <img src="../assets/icons/ch.svg" alt="flag" style="width: 24px; height: 24px;" />
+          <img src="../assets/icons/tq.svg" alt="flag" style="width: 24px; height: 24px;" />
           <span class="banner-title">派对旅行</span>
           <span class="banner-separator">|</span>
           <span class="banner-title">ROE Pride Season 2026</span>
@@ -99,7 +99,7 @@ import { useRouter } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
-import { categories,quickCards } from '../unit/curatedList.js'
+import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
 
 

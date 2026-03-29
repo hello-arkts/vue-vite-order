@@ -13,4 +13,10 @@ const quickCards = [
   {  title: 'VIP接机', desc: '专属服务',icon: new URL('../assets/icons/car.svg', import.meta.url).href }
 ]
 
-export {categories, quickCards}
+const countryCodes = [
+  { code: '+86', name: '中国', icon: new URL('../assets/icons/ch.svg', import.meta.url).href },
+  { code: '+1', name: '美国', icon: new URL('../assets/icons/us.svg', import.meta.url).href },
+  { code: '+66', name: '泰国', icon: new URL('../assets/icons/th.svg', import.meta.url).href },
+]
+
+export {categories, quickCards, countryCodes}

@@ -16,16 +16,32 @@
       <div class="input-group">
         <div class="phone-input-wrapper">
           <img src="../assets/icons/Smatphone.svg" class="input-icon phone-left-icon" />
-          <div class="country-code">
-            <span class="code">+66</span>
-            <el-icon class="arrow-icon"><ArrowDown /></el-icon>
-          </div>
+          <el-dropdown trigger="click" @command="handleCountryChange" class="country-dropdown">
+            <div class="country-code">
+              <span class="code">{{ selectedCountry.code }}</span>
+              <el-icon class="arrow-icon"><ArrowDown /></el-icon>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item 
+                  v-for="country in countryCodes" 
+                  :key="country.code" 
+                  :command="country"
+                  class="country-dropdown-item"
+                >
+                  <img :src="country.icon" class="dropdown-flag-icon" />
+                  <span class="dropdown-country-name">{{ country.name }}</span>
+                  <span class="dropdown-country-code">{{ country.code }}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <el-input
             v-model="loginForm.phone"
             placeholder="062 229 3340"
             class="phone-input"
           />
-          <img src="../assets/icons/red.svg" class="input-icon flag-icon" />
+          <img :src="selectedCountry.icon" class="input-icon flag-icon" />
         </div>
       </div>
       
@@ -85,6 +101,7 @@ import { ref, defineProps, defineEmits, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { login } from '@/api/loginServe.js'
+import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
   modelValue: {
@@ -103,6 +120,14 @@ const loginForm = ref({
 const showPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
+
+// 默认选中泰国
+const selectedCountry = ref(countryCodes.find(c => c.code === '+66') || countryCodes[0])
+
+// 处理国家选择
+const handleCountryChange = (country) => {
+  selectedCountry.value = country
+}
 
 // 监听modelValue变化
 watch(() => props.modelValue, (newValue) => {
@@ -205,13 +230,45 @@ const handleLogin = async () => {
   margin-right: 8px;
 }
 
+.country-dropdown {
+  cursor: pointer;
+}
+
 .country-code {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 4px;
+  width: 60px;
   padding-right: 8px;
   border-right: 1px solid #E5E5E5;
   margin-right: 8px;
+}
+
+.country-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-width: 160px;
+}
+
+.dropdown-flag-icon {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.dropdown-country-name {
+  flex: 1;
+  font-size: 14px;
+  color: #333333;
+}
+
+.dropdown-country-code {
+  font-size: 14px;
+  color: #999999;
 }
 
 .code {
