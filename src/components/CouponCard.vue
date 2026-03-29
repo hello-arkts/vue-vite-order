@@ -194,7 +194,6 @@ const handleCardClick = () => {
 
 const openDrawer = () => {
   getCouponDetails(props.coupon.id)
-  drawerVisible.value = true
 }
 
 const copyAddress = () => {
@@ -219,6 +218,7 @@ const getCouponDetails = async (id) => {
     const res = await getCouponDetail(formData)
     if (res.code === 200) {
       couponTypes.value = res.data || []
+      drawerVisible.value = true
 
       // 初始化默认门店
       selectedStoreId.value = couponTypes.value.shopList[0]?.id || 0

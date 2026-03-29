@@ -4,7 +4,7 @@
     <div class="header-section">
       <div class="user-info">
         <el-avatar :size="48" class="user-avatar">
-          <img :src="`https://api.dicebear.com/8.x/micah/svg?seed=${avatarSeed}`" alt="avatar" />
+          <img :src="`https://api.dicebear.com/8.x/micah/svg?seed=${ avatarSeed}`" alt="avatar" />
         </el-avatar>
         <div class="user-info-title">
           <img src="../assets/icons/red.svg" alt="抽奖" class="lottery-btn">
@@ -105,7 +105,7 @@ import { getCouponList } from '../api/index.js'
 
 const router = useRouter()
 const activeCategory = ref(0)
-const avatarSeed = ref(Math.floor(Math.random() * 10000))
+const avatarSeed = ref( localStorage.getItem('userInfo') || Math.floor(Math.random() * 10000))
 
 const filteredCoupons = ref([])
 

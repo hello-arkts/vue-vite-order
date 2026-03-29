@@ -167,6 +167,7 @@ const handleLogin = async () => {
       }
 
       ElMessage.success('登录成功')
+      localStorage.setItem('userInfo', loginForm.value.phone)
       emit('login-success', response.data)
       drawerVisible.value = false
     } else {
