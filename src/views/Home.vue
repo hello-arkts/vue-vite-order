@@ -245,10 +245,14 @@ onMounted(() => {
 .quick-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-auto-rows: 80px;
+  justify-items: center;
+  column-gap: 9px;
 }
 
 .quick-card {
+  width: 100%;
+  height: 68px;
   display: flex;
   align-items: center;
   gap: 8px;

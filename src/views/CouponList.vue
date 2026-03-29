@@ -18,9 +18,10 @@
     <div class="coupon-content">
       <div class="coupon-grid">
         <CouponCard
-          v-for="coupon in filteredCoupons"
+          v-for="(coupon, index) in filteredCoupons"
           :key="coupon.id"
           :coupon="coupon"
+          :index="index"
           @click="goToCouponDetail"
         />
       </div>
@@ -122,7 +123,7 @@ const goToCouponDetail = (coupon) => {
   gap: 12px;
 }
 
-/* 加载动画 */
+/* 加载动画 - 通过CSS变量控制延迟，由CouponCard组件应用 */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -133,23 +134,6 @@ const goToCouponDetail = (coupon) => {
     transform: translateY(0);
   }
 }
-
-.coupon-grid > * {
-  animation: fadeInUp 0.4s ease forwards;
-}
-
-.coupon-grid > *:nth-child(1) { animation-delay: 0.05s; }
-.coupon-grid > *:nth-child(2) { animation-delay: 0.1s; }
-.coupon-grid > *:nth-child(3) { animation-delay: 0.15s; }
-.coupon-grid > *:nth-child(4) { animation-delay: 0.2s; }
-.coupon-grid > *:nth-child(5) { animation-delay: 0.25s; }
-.coupon-grid > *:nth-child(6) { animation-delay: 0.3s; }
-.coupon-grid > *:nth-child(7) { animation-delay: 0.35s; }
-.coupon-grid > *:nth-child(8) { animation-delay: 0.4s; }
-.coupon-grid > *:nth-child(9) { animation-delay: 0.45s; }
-.coupon-grid > *:nth-child(10) { animation-delay: 0.5s; }
-.coupon-grid > *:nth-child(11) { animation-delay: 0.55s; }
-.coupon-grid > *:nth-child(12) { animation-delay: 0.6s; }
 
 /* ============ 响应式设计 ============ */
 

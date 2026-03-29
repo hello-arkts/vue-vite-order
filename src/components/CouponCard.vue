@@ -1,5 +1,10 @@
 <template>
-  <el-card class="coupon-card" shadow="hover" @click="handleCardClick">
+  <el-card
+    class="coupon-card"
+    shadow="hover"
+    :style="{ animationDelay: `${index * 0.05}s` }"
+    @click="handleCardClick"
+  >
     <div class="card-content">
       <div class="card-logo">
         <el-avatar :size="35" :style="{ background: logoColor }">
@@ -97,6 +102,10 @@ const props = defineProps({
   coupon: {
     type: Object,
     required: true
+  },
+  index: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -178,7 +187,21 @@ const activeCoupon = (row, index) => {
   border-radius: 22px 22px 22px 22px;
   cursor: pointer;
   transition: all 0.25s ease;
-  padding:16px ;
+  padding:16px;
+  /* 列表项入场动画 - 仅作用于卡片本身 */
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* 列表项入场动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 :deep(.el-card__body){
