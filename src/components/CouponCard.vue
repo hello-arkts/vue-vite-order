@@ -67,7 +67,7 @@
       </div>
 
       <!-- 门店地址 -->
-      <div style="display: flex">
+      <div class="store-address-container">
         <div class="store-address">
           <div class="address-row" @click="toggleAddressDropdown">
             <img src="../assets/icons/zb.svg" class="location-icon" />
@@ -76,7 +76,7 @@
           </div>
           <div class="address-dropdown" v-show="addressDropdownVisible">
             <div
-                v-for="(store, index) in storeList"
+                v-for="(store, index) in coupon.shopList"
                 :key="index"
                 class="address-item"
                 :class="{ 'active': selectedStoreIndex === index }"
@@ -87,7 +87,7 @@
             </div>
           </div>
         </div>
-        <el-button type="primary" size="small" round @click="copyAddress">复制地址</el-button>
+        <el-button class="copy-address-btn" type="primary" size="small" round @click="copyAddress">复制地址</el-button>
       </div>
 
       <!-- 导航按钮 -->
@@ -133,21 +133,7 @@ const couponTypes = ref([])
 // 门店地址
 const addressDropdownVisible = ref(false)
 const selectedStoreIndex = ref(0)
-const selectedStoreAddress = ref('')
-const storeList = ref([
-  {
-    name: '曼谷总店',
-    address: '30 ซอย ราษฎร์พัฒนา 32 แขวง หัวหมาก เขต บางกะปิ กรุงเทพมหานคร 10220'
-  },
-  {
-    name: '暹罗广场店',
-    address: 'สยามสแควร์ ถนนพระรามที่ 1 เขตปทุมวัน กรุงเทพมหานคร 10330'
-  },
-  {
-    name: '素坤逸店',
-    address: 'ซอยสุขุมวิท 21 แขวงคลองเตยเหนือ เขตวัฒนา กรุงเทพมหานคร 10110'
-  }
-])
+const selectedStoreAddress = ref(props.coupon.shopList[0]?.address)
 
 // 优惠券金额
 const couponAmount = (coupon) => {
@@ -176,8 +162,6 @@ const selectStore = (store, index) => {
   selectedStoreAddress.value = store.address
   addressDropdownVisible.value = false
 }
-
-selectedStoreAddress.value = storeList.value[0].address
 
 // 生成二维码
 const generateQrCode = async () => {
@@ -484,14 +468,33 @@ const getCouponDetails = async () => {
   text-transform: none;
 }
 
+/* 门店地址容器 */
+.store-address-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
 /* 门店地址 */
 .store-address {
+  flex: 1;
   padding: 12px 16px;
   background: #FFFFFF;
   border-radius: var(--radius-md);
-  margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+}
+
+/* 复制地址按钮 */
+.copy-address-btn {
+  align-self: flex-start;
+  flex-shrink: 0;
+  height: 40px;
+  padding: 0 16px;
+  font-size: var(--font-sm);
+  background: #5668F4;
+  border-radius: 25px 25px 25px 25px;
 }
 
 .address-row {
@@ -571,8 +574,8 @@ const getCouponDetails = async () => {
   width: 100%;
   height: 48px;
   font-size: var(--font-md);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+  background: #5668F4;
+  border-radius: 25px 25px 25px 25px;
   border: none;
 }
 
