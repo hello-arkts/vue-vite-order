@@ -75,7 +75,7 @@
       </div>
 
       <!-- 导航按钮 -->
-      <el-button 
+      <el-button
         type="primary" 
         size="large" 
         class="nav-btn" 
@@ -91,8 +91,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { ArrowDown } from '@element-plus/icons-vue'
-import { Close, Location, Position } from '@element-plus/icons-vue'
+import { ArrowDown,Position } from '@element-plus/icons-vue'
 
 const props = defineProps({
   coupon: {

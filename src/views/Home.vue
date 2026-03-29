@@ -74,6 +74,7 @@
       <!-- 分类标签 -->
       <CategoryTabs
         v-model="activeCategory" 
+        @change="setCouponDetail"
         :tabs="categories"
         :paddingNum="0"
         bgColor="var(--bg-transparent)"
@@ -86,7 +87,6 @@
           v-for="coupon in filteredCoupons" 
           :key="coupon.id"
           :coupon="coupon"
-          @click="goToCouponDetail"
         />
       </div>
     </el-card>
@@ -106,7 +106,6 @@ import { getCouponList } from '../api/index.js'
 const router = useRouter()
 const activeCategory = ref(0)
 
-
 const coupons = ref([
   { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
   { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
@@ -118,33 +117,31 @@ const coupons = ref([
   { id: 8, name: '机场接机', discount: '预约9折', category: 2 }
 ])
 
+const filteredCoupons = ref([])
 
-const getCouponLists = async (type = '0') => {
+const getCouponLists = async (type = 0) => {
   try {
-    const params = {
-      type: type,
-      pageNum: 1,
-      pageSize: 999,
-    }
-    const response = await getCouponList(params)
+    const formData = new FormData()
+    formData.append('type', type)
+    formData.append('pageNum', 1)
+    formData.append('pageSize', 999)
+    const response = await getCouponList(formData)
     if (response.code === 200) {
-      coupons.value = response.data || []
+      filteredCoupons.value = response.data.list || []
     }
   } catch (error) {
     console.error('获取优惠券列表失败:', error)
   }
 }
 
-const filteredCoupons = computed(() => {
-  return coupons.value.filter(c => c.category === activeCategory.value)
-})
+
 
 const goToCouponList = () => {
   router.push('/coupons')
 }
 
-const goToCouponDetail = (coupon) => {
-  router.push(`/coupon/${coupon.id}`)
+const setCouponDetail = (tab) => {
+  getCouponLists(tab.id)
 }
 
 onMounted(() => {

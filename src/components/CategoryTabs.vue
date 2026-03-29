@@ -5,7 +5,7 @@
       :key="index"
       class="tab-item"
       :class="{ active: modelValue === index }"
-      @click="handleSelect(index)"
+      @click="handleSelect(tab,index)"
     >
       <span class="tab-icon" v-if="tab.icon">
         <img :src="tab.icon" class="tab-icon-image" />
@@ -39,10 +39,11 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
-const handleSelect = (index) => {
+const handleSelect = (tab,index) => {
   emit('update:modelValue', index)
+  emit('change', tab)
 }
 </script>
 
