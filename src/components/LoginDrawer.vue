@@ -2,7 +2,7 @@
   <el-drawer
     v-model="drawerVisible"
     direction="btt"
-    size="85%"
+    size="60%"
     :show-close="false"
     :with-header="false"
     class="login-drawer"
@@ -56,15 +56,8 @@
             class="password-input"
           />
           <div class="eye-icon" @click="showPassword = !showPassword">
-            <svg v-if="!showPassword" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 4.5C6.5 4.5 3.5 6.5 2 10C3.5 13.5 6.5 15.5 10 15.5C13.5 15.5 16.5 13.5 18 10C16.5 6.5 13.5 4.5 10 4.5Z" stroke="#999999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="10" cy="10" r="2.5" stroke="#999999" stroke-width="1.5"/>
-            </svg>
-            <svg v-else width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 4.5C6.5 4.5 3.5 6.5 2 10C3.5 13.5 6.5 15.5 10 15.5C13.5 15.5 16.5 13.5 18 10C16.5 6.5 13.5 4.5 10 4.5Z" stroke="#999999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="10" cy="10" r="2.5" stroke="#999999" stroke-width="1.5"/>
-              <path d="M3 3L17 17" stroke="#999999" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+            <img v-if="showPassword" src="../assets/icons/yy.svg" class="eye-icon" />
+            <img v-if="!showPassword" src="../assets/icons/yn.svg" class="eye-icon" />
           </div>
         </div>
       </div>
@@ -82,11 +75,11 @@
       
       <!-- 注册链接 -->
       <div class="register-link">
-        没有账号？ <a href="#" class="register-btn">立即注册</a>
+        没有账号？ <a href="#" class="register-btn" @click.prevent="goToRegister">立即注册</a>
       </div>
       
       <!-- 服务协议 -->
-      <div class="agreement">
+      <div class="agreement" v-if="false">
         <el-checkbox v-model="agreeTerms" class="agreement-checkbox">
           <span class="agreement-text">继续即表示您已同意</span>
           <a href="#" class="agreement-link">《MXCOME服务协议与隐私政策》</a>
@@ -110,7 +103,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'login-success'])
+const emit = defineEmits(['update:modelValue', 'login-success', 'switch-register'])
 
 const drawerVisible = ref(props.modelValue)
 const loginForm = ref({
@@ -138,6 +131,12 @@ watch(() => props.modelValue, (newValue) => {
 watch(drawerVisible, (newValue) => {
   emit('update:modelValue', newValue)
 })
+
+// 跳转到注册
+const goToRegister = () => {
+  drawerVisible.value = false
+  emit('switch-register')
+}
 
 const handleLogin = async () => {
   // 表单验证
@@ -339,6 +338,8 @@ const handleLogin = async () => {
 }
 
 .eye-icon {
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
