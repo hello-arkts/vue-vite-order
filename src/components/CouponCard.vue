@@ -25,7 +25,7 @@
     :show-close="false"
     :with-header="false"
     class="coupon-drawer"
-    style="border-radius: 26px 26px 0 0"
+    style="border-radius: 26px 26px 0 0;background: #F9F5F6;"
   >
     <div class="drawer-content">
       <!-- 商户信息 -->
@@ -67,12 +67,27 @@
       </div>
 
       <!-- 门店地址 -->
-      <div class="store-address">
-        <div class="address-row">
-          <img src="../assets/icons/location.svg" alt="定位" class="location-icon" />
-          <span class="address-text">{{ storeAddress }}</span>
-          <el-icon class="dropdown-icon"><ArrowDown /></el-icon>
+      <div style="display: flex">
+        <div class="store-address">
+          <div class="address-row" @click="toggleAddressDropdown">
+            <img src="../assets/icons/zb.svg" class="location-icon" />
+            <span class="address-text">{{ selectedStoreAddress }}</span>
+            <el-icon class="dropdown-icon" :class="{ 'rotate': addressDropdownVisible }"><ArrowDown /></el-icon>
+          </div>
+          <div class="address-dropdown" v-show="addressDropdownVisible">
+            <div
+                v-for="(store, index) in storeList"
+                :key="index"
+                class="address-item"
+                :class="{ 'active': selectedStoreIndex === index }"
+                @click="selectStore(store, index)"
+            >
+              <div class="store-name">{{ store.name }}</div>
+              <div class="store-detail">{{ store.address }}</div>
+            </div>
+          </div>
         </div>
+        <el-button type="primary" size="small" round @click="copyAddress">复制地址</el-button>
       </div>
 
       <!-- 导航按钮 -->
@@ -115,7 +130,24 @@ const selectedCoupon = ref({})
 const qrCanvas = ref(null)
 // 券类型数据
 const couponTypes = ref([])
-
+// 门店地址
+const addressDropdownVisible = ref(false)
+const selectedStoreIndex = ref(0)
+const selectedStoreAddress = ref('')
+const storeList = ref([
+  {
+    name: '曼谷总店',
+    address: '30 ซอย ราษฎร์พัฒนา 32 แขวง หัวหมาก เขต บางกะปิ กรุงเทพมหานคร 10220'
+  },
+  {
+    name: '暹罗广场店',
+    address: 'สยามสแควร์ ถนนพระรามที่ 1 เขตปทุมวัน กรุงเทพมหานคร 10330'
+  },
+  {
+    name: '素坤逸店',
+    address: 'ซอยสุขุมวิท 21 แขวงคลองเตยเหนือ เขตวัฒนา กรุงเทพมหานคร 10110'
+  }
+])
 
 // 优惠券金额
 const couponAmount = (coupon) => {
@@ -135,8 +167,17 @@ const couponType = (coupon) => {
   }
 }
 
-// 门店地址
-const storeAddress = '30 ซอย ราษฎร์พัฒนา 32 แขวง หัวหมาก เขต บางกะปิ\nกรุงเทพมหานคร 10220'
+const toggleAddressDropdown = () => {
+  addressDropdownVisible.value = !addressDropdownVisible.value
+}
+
+const selectStore = (store, index) => {
+  selectedStoreIndex.value = index
+  selectedStoreAddress.value = store.address
+  addressDropdownVisible.value = false
+}
+
+selectedStoreAddress.value = storeList.value[0].address
 
 // 生成二维码
 const generateQrCode = async () => {
@@ -327,7 +368,7 @@ const getCouponDetails = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 32px;
 }
 
 .qrcode-box {
@@ -337,7 +378,7 @@ const getCouponDetails = async () => {
   background: white;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  margin-bottom: 12px;
+  margin-bottom: 7px;
 }
 
 .qrcode-canvas {
@@ -354,8 +395,11 @@ const getCouponDetails = async () => {
 }
 
 .coupon-tip {
-  font-size: var(--font-xs);
-  color: var(--text-tertiary);
+  font-size: var(--font-lg);
+  color: var(--text-primary);
+  font-weight: 500;
+  font-style: normal;
+  text-transform: none;
 }
 
 /* 券类型选择 */
@@ -447,12 +491,14 @@ const getCouponDetails = async () => {
   border-radius: var(--radius-md);
   margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
 .address-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 }
 
 .location-icon {
@@ -474,6 +520,50 @@ const getCouponDetails = async () => {
   font-size: 16px;
   color: var(--text-tertiary);
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.address-dropdown {
+  margin-top: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border-light);
+  padding-top: 12px;
+}
+
+.address-item {
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  padding: 10px 8px;
+}
+
+.address-item:hover {
+  background-color: #f5f5f5;
+}
+
+.address-item.active {
+  background-color: #FFF0F2;
+}
+
+.store-name {
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.store-detail {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 导航按钮 */
