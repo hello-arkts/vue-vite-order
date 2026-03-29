@@ -100,7 +100,10 @@
     </el-card>
 
     <!-- 登录抽屉 -->
-    <LoginDrawer v-model="loginDrawerVisible" @login-success="handleLoginSuccess" />
+    <LoginDrawer v-model="loginDrawerVisible" @switch-register="handleSwitchToRegister" />
+    
+    <!-- 注册抽屉 -->
+    <RegisterDrawer v-model="registerDrawerVisible" @switch-login="handleSwitchToLogin" />
   </div>
 </template>
 
@@ -111,6 +114,7 @@ import { ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import LoginDrawer from '../components/LoginDrawer.vue'
+import RegisterDrawer from '../components/RegisterDrawer.vue'
 import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
 import {ElMessage} from "element-plus";
@@ -121,6 +125,7 @@ const activeCategory = ref(0)
 const avatarSeed = ref( localStorage.getItem('userInfo') || Math.floor(Math.random() * 10000))
 const isLoggedIn = ref('')
 const loginDrawerVisible = ref(false)
+const registerDrawerVisible = ref(false)
 
 const filteredCoupons = ref([])
 
@@ -164,6 +169,16 @@ const handleCommand = (command) => {
 // 获取店家优惠券
 const setCouponDetail = (tab) => {
   getCouponLists(tab.id)
+}
+
+const handleSwitchToRegister = () => {
+  loginDrawerVisible.value = false
+  registerDrawerVisible.value = true
+}
+
+const handleSwitchToLogin = () => {
+  registerDrawerVisible.value = false
+  loginDrawerVisible.value = true
 }
 
 onMounted(() => {
