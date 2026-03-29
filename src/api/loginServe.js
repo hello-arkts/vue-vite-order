@@ -22,10 +22,10 @@ export const getCode = (params = {}) => {
 }
 
 /**
- * 校验验证码
+ * 注册账号
  */
-export const getAuthCode = (params = {}) => {
-    return post('/mall-portal/util/checkAuthCode', params)
+export const registerAccount = (params = {}) => {
+    return post('/mall-portal/sso/register', params)
 }
 
 /**
