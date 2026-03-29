@@ -1,7 +1,7 @@
 /**
  * API 模块统一导出
  */
-import { login, register, getCode } from './loginServe.js'
+import { login, register, getCode, setPassword, getAuthCode } from './loginServe.js'
 import { getCouponList, getCouponDetail } from './couponServe.js'
 
 // 请求工具
@@ -12,5 +12,7 @@ export {
   register,
   getCode,
   getCouponList,
-  getCouponDetail
+  getCouponDetail,
+  setPassword,
+  getAuthCode,
 }

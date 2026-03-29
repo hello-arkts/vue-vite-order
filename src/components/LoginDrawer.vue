@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch } from 'vue'
+import {ref, defineProps, defineEmits, watch, computed} from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { login } from '@/api/loginServe.js'
@@ -115,7 +115,7 @@ const agreeTerms = ref(false)
 const loading = ref(false)
 
 // 默认选中泰国
-const selectedCountry = ref(countryCodes.find(c => c.code === '+66') || countryCodes[0])
+const selectedCountry = ref(countryCodes.find(c => c.code === '+86') || countryCodes[0])
 
 // 处理国家选择
 const handleCountryChange = (country) => {
@@ -147,11 +147,6 @@ const handleLogin = async () => {
 
   if (!loginForm.value.password) {
     ElMessage.error('请输入密码')
-    return
-  }
-
-  if (!agreeTerms.value) {
-    ElMessage.error('请同意服务协议和隐私政策')
     return
   }
 
@@ -191,7 +186,6 @@ const handleLogin = async () => {
 }
 
 .drawer-content {
-  padding: 32px 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -405,7 +399,7 @@ const handleLogin = async () => {
 /* 响应式设计 */
 @media (min-width: 768px) {
   .drawer-content {
-    padding: 40px 32px;
+
   }
   
   .login-title {

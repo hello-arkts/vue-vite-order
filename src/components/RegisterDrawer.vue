@@ -63,13 +63,13 @@
               class="code-input"
               maxlength="6"
             />
-            <el-button 
-              class="send-code-btn" 
+            <span
+              class="send-code-btn"
               :disabled="countdown > 0 || !isPhoneValid"
               @click="sendCode"
             >
               {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
-            </el-button>
+            </span>
           </div>
         </div>
       </template>
@@ -150,7 +150,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
-import { getCode, register } from '@/api/loginServe.js'
+import {getCode, register, setPassword} from '@/api/loginServe.js'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
@@ -179,7 +179,7 @@ const registerForm = ref({
 })
 
 // 默认选中泰国
-const selectedCountry = ref(countryCodes.find(c => c.code === '+66') || countryCodes[0])
+const selectedCountry = ref(countryCodes.find(c => c.code === '+86') || countryCodes[0])
 
 // 手机号验证
 const isPhoneValid = computed(() => {
@@ -211,12 +211,10 @@ const isPasswordValid = computed(() => {
 const canSubmit = computed(() => {
   if (currentStep.value === 1) {
     return isPhoneValid.value && 
-           registerForm.value.code.length >= 4 && 
-           agreeTerms.value
+           registerForm.value.code.length >= 4
   } else {
     return isPasswordValid.value && 
-           registerForm.value.password === registerForm.value.confirmPassword &&
-           agreeTerms.value
+           registerForm.value.password === registerForm.value.confirmPassword
   }
 })
 
@@ -235,9 +233,10 @@ const sendCode = async () => {
   
   try {
     loading.value = true
-    const response = await getCode({
-      phone: selectedCountry.value.code + registerForm.value.phone
-    })
+    const formData = new FormData()
+    formData.append('telephone', registerForm.value.phone)
+    formData.append('phoneCode', selectedCountry.value.code)
+    const response = await getCode(formData)
     
     if (response.code === 200) {
       ElMessage.success('验证码已发送')
@@ -266,10 +265,6 @@ const startCountdown = () => {
 
 // 处理提交
 const handleSubmit = async () => {
-  if (!agreeTerms.value) {
-    ElMessage.error('请同意服务协议和隐私政策')
-    return
-  }
   
   if (currentStep.value === 1) {
     // 验证验证码
@@ -293,11 +288,13 @@ const handleSubmit = async () => {
     
     loading.value = true
     try {
-      const response = await register({
-        phone: selectedCountry.value.code + registerForm.value.phone,
-        code: registerForm.value.code,
-        password: registerForm.value.password
-      })
+      const formData = new FormData()
+      formData.append('telephone', registerForm.value.phone)
+      formData.append('phoneCode', selectedCountry.value.code)
+      formData.append('newPassword', registerForm.value.password)
+      formData.append('password', registerForm.value.password)
+
+      const response = await setPassword(formData)
       
       if (response.code === 200) {
         ElMessage.success('注册成功')
@@ -538,9 +535,11 @@ onUnmounted(() => {
 }
 
 .send-code-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   min-width: 90px;
   height: 32px;
-  padding: 0 12px;
   font-size: 13px;
   color: #E53935;
   background: transparent;
