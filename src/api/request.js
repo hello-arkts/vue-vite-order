@@ -45,7 +45,7 @@ service.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    return response.data.data || response.data
+    return response.data
   },
   (error) => {
     if (error.response?.status === 401) {

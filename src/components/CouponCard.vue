@@ -7,12 +7,12 @@
   >
     <div class="card-content">
       <div class="card-logo">
-        <el-avatar :size="35" :style="{ background: logoColor }">
-          {{ coupon.name.charAt(0) }}
+        <el-avatar :size="35" style="height: 35px">
+          <img :src="coupon.shop?.logo" />
         </el-avatar>
       </div>
       <div class="card-name">{{ coupon.name }}</div>
-      <div class="card-discount">{{ coupon.discount }}</div>
+      <div class="card-discount">{{ couponAmount(coupon) }}</div>
       <el-button class="card-btn" size="small" round @click.stop="openDrawer">立即使用</el-button>
     </div>
   </el-card>
@@ -30,8 +30,8 @@
     <div class="drawer-content">
       <!-- 商户信息 -->
       <div class="merchant-info">
-        <el-avatar :size="61" :style="{ background: logoColor }">
-          {{ coupon.name.charAt(0) }}
+        <el-avatar :size="61">
+          <img :src="coupon.shop.logo" />
         </el-avatar>
         <h2 class="merchant-name">{{ coupon.name }}</h2>
         <div class="discount-text">{{ coupon.discount }}</div>
@@ -97,6 +97,7 @@
 import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown,Position } from '@element-plus/icons-vue'
+import {getCouponDetail} from "@/api/index.js";
 
 const props = defineProps({
   coupon: {
@@ -114,21 +115,19 @@ const emit = defineEmits(['click'])
 const drawerVisible = ref(false)
 const activeCouponType = ref(0)
 
-// 根据名称生成不同的logo背景色
-const logoColors = [
-  '#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', 
-  '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'
-]
-
-const logoColor = computed(() => {
-  const index = props.coupon.name.length % logoColors.length
-  return logoColors[index]
-})
-
 // 生成券码
 const couponCode = computed(() => {
   return String(props.coupon.id).padStart(7, '0')
 })
+
+// 优惠券金额
+const couponAmount = (coupon) => {
+  if (coupon.minPoint && coupon.minPoint > 0) {
+    return '满' + coupon.minPoint + '减' + coupon.amount
+  } else {
+    return coupon.amount +'代金券'
+  }
+}
 
 // 券类型数据
 const couponTypes = ref([
@@ -160,6 +159,7 @@ const handleCardClick = () => {
 }
 
 const openDrawer = () => {
+  getCouponDetails()
   drawerVisible.value = true
 }
 
@@ -174,6 +174,22 @@ const handleNavigation = () => {
 
 const activeCoupon = (row, index) => {
   activeCouponType.value = index
+}
+
+//获取优惠券详情
+const getCouponDetails = async () => {
+  const formData = new FormData()
+  formData.append('couponId', props.coupon.id)
+  try {
+    const res = await getCouponDetail(formData)
+    if (res.code === 200) {
+      ElMessage.success('优惠券详情获取成功')
+    } else {
+      ElMessage.error(res.msg || '优惠券详情获取失败')
+    }
+  } catch (error) {
+    ElMessage.error(error.message || '优惠券详情获取失败')
+  }
 }
 </script>
 

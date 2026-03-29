@@ -10,3 +10,11 @@ export const getCouponList = (params = {}) => {
   return post('/mall-portal/member/coupon/coupon1List', params)
 }
 
+/**
+ * 获取优惠券详情
+ */
+export const getCouponDetail = (params = {}) => {
+  return post('/mall-portal/member/coupon/coupon1Detail', params)
+}
+
+

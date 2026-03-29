@@ -8,6 +8,7 @@
       <!-- 分类标签 -->
       <CategoryTabs
           v-model="activeCategory"
+          @change="setCouponDetail"
           :tabs="categories"
           :paddingNum="17"
           bgColor="var(--bg-transparent)"
@@ -33,64 +34,40 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import { categories } from '../unit/curatedList.js'
+import {getCouponList} from "@/api/index.js";
 
-
-const router = useRouter()
 const activeCategory = ref(0)
 
-// 模拟数据 - 与设计图一致
-const coupons = ref([
-  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 5, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 6, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 7, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 8, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
-  { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
-  { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
-  { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 },
-  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 5, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 6, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 7, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 8, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
-  { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
-  { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
-  { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 },
-  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 5, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 6, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 7, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 8, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 9, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
-  { id: 10, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
-  { id: 11, name: 'Grab租车', discount: '首单立减50', category: 2 },
-  { id: 12, name: '机场接机服务', discount: '预约9折', category: 2 }
-])
+const filteredCoupons = ref([])
 
-const filteredCoupons = computed(() => {
-  return coupons.value.filter(c => c.category === activeCategory.value)
-})
-
-const goToCouponDetail = (coupon) => {
-  router.push(`/coupon/${coupon.id}`)
+const setCouponDetail = (tab) => {
+  getCouponLists(tab.id)
 }
+
+const getCouponLists = async (type = 1) => {
+  try {
+    const formData = new FormData()
+    formData.append('type', type)
+    formData.append('pageNum', 1)
+    formData.append('pageSize', 999)
+    const response = await getCouponList(formData)
+    if (response.code === 200) {
+      filteredCoupons.value = response.data.list || []
+    }
+  } catch (error) {
+    console.error('获取优惠券列表失败:', error)
+  }
+}
+
+onMounted(() => {
+    getCouponLists()
+ })
 </script>
 
 <style scoped>

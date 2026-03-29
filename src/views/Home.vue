@@ -83,7 +83,7 @@
 
       <!-- 优惠券列表 -->
       <div class="coupon-grid">
-        <CouponCard 
+        <CouponCard
           v-for="coupon in filteredCoupons" 
           :key="coupon.id"
           :coupon="coupon"
@@ -106,20 +106,9 @@ import { getCouponList } from '../api/index.js'
 const router = useRouter()
 const activeCategory = ref(0)
 
-const coupons = ref([
-  { id: 1, name: 'Nara Thai Cuisine', discount: '满500减100', category: 0 },
-  { id: 2, name: 'KFC Thailand', discount: '满100减10', category: 0 },
-  { id: 3, name: 'Bar.Yard', discount: '满500减100', category: 0 },
-  { id: 4, name: "McDonald's", discount: '满500减100', category: 0 },
-  { id: 5, name: '曼谷希尔顿酒店', discount: '满1000减200', category: 1 },
-  { id: 6, name: '芭提雅度假村', discount: '满2000减300', category: 1 },
-  { id: 7, name: 'Grab租车', discount: '首单立减50', category: 2 },
-  { id: 8, name: '机场接机', discount: '预约9折', category: 2 }
-])
-
 const filteredCoupons = ref([])
 
-const getCouponLists = async (type = 0) => {
+const getCouponLists = async (type = 1) => {
   try {
     const formData = new FormData()
     formData.append('type', type)
@@ -140,6 +129,7 @@ const goToCouponList = () => {
   router.push('/coupons')
 }
 
+// 获取店家优惠券
 const setCouponDetail = (tab) => {
   getCouponLists(tab.id)
 }
