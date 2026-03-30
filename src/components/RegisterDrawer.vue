@@ -62,12 +62,11 @@
               class="code-input"
               maxlength="6"
             />
-            {{countdown > 0 || !isPhoneValid || sendingCode }}
             <button
               class="send-code-btn"
               :class="{ disabled: countdown > 0 || !isPhoneValid || sendingCode }"
               @click="sendCode"
-              :disabled="sendingCode || countdown > 0"
+              :disabled="countdown > 0 || !isPhoneValid || sendingCode"
             >
               {{ sendingCode ? '发送中...' : (countdown > 0 ? `${countdown}s` : '获取验证码') }}
             </button>
