@@ -1,5 +1,5 @@
 <template>
-  <div class="category-tabs" :class="{ 'wrap-mode': isWrap }" :style="{ padding: paddingNum + 'px', background: bgColor }">
+  <div class="category-tabs" :class="{ 'wrap-mode': isWrap }" :style="{ padding: paddingNum + 'px', background: bgColor,paddingBottom: paddingNumBottom + 'px' }">
     <div 
       v-for="(tab, index) in tabs" 
       :key="index"
@@ -26,6 +26,10 @@ const props = defineProps({
     default: 0
   },
   paddingNum: {
+    type: Number,
+    default: 12
+  },
+  paddingNumBottom: {
     type: Number,
     default: 12
   },

@@ -11,6 +11,7 @@
           @change="setCouponDetail"
           :tabs="categories"
           :paddingNum="17"
+          :paddingNumBottom="0"
           bgColor="var(--bg-transparent)"
       />
     </div>
@@ -23,7 +24,6 @@
           :key="coupon.id"
           :coupon="coupon"
           :index="index"
-          @click="goToCouponDetail"
         />
       </div>
 
@@ -90,7 +90,8 @@ onMounted(() => {
 
 .coupon-content {
   padding: 0 16px;
-  padding-top: 118px; /* 预留固定头部的高度 */
+  padding-top: 116px; /* 预留固定头部的高度 */
+  padding-bottom: 20px;
   min-height: calc(100vh - 100px);
 }
 

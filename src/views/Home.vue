@@ -85,6 +85,7 @@
         @change="setCouponDetail"
         :tabs="categories"
         :paddingNum="0"
+        :paddingNumBottom="0"
         bgColor="var(--bg-transparent)"
         :isWrap="true"
       />
@@ -175,12 +176,7 @@ const getCouponLists = async (type = 1) => {
     formData.append('pageNum', 1)
     formData.append('pageSize', 999)
     const response = await getCouponList(formData)
-    if (response.code === 200) {
-      for (let i = 0; i < 20; i++) {
-        filteredCoupons.value = [...filteredCoupons.value, ...response.data.list]
-      }
-
-    }
+    filteredCoupons.value = response.data.list || []
   } catch (error) {
     console.error('获取优惠券列表失败:', error)
   }
@@ -491,6 +487,7 @@ onMounted(() => {
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   justify-items: center;
+  padding: 0 0 6px 0 ;
 }
 
 /* ============ 响应式设计 ============ */
