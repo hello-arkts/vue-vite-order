@@ -2,11 +2,13 @@
 import { ref, watch } from 'vue'
 import LoginDrawer from '@/components/LoginDrawer.vue'
 import RegisterDrawer from '@/components/RegisterDrawer.vue'
+import ForgotPasswordDrawer from '@/components/ForgotPasswordDrawer.vue'
 import { getLoginDrawerStatus, hideLoginDrawer, emitLoginSuccess } from '@/utils/loginDrawer.js'
 import { ElMessage } from 'element-plus'
 
 const loginDrawerVisible = ref(false)
 const registerDrawerVisible = ref(false)
+const forgotPasswordDrawerVisible = ref(false)
 
 // 监听全局登录抽屉状态
 watch(() => getLoginDrawerStatus(), (newValue) => {
@@ -45,6 +47,25 @@ const handleRegisterSuccess = () => {
   // 显示登录抽屉
   loginDrawerVisible.value = true
 }
+
+// 切换到忘记密码
+const switchToForgotPassword = () => {
+  loginDrawerVisible.value = false
+  forgotPasswordDrawerVisible.value = true
+}
+
+// 忘记密码成功处理
+const handleForgotPasswordSuccess = () => {
+  ElMessage.success('密码重置成功，请登录')
+  forgotPasswordDrawerVisible.value = false
+  loginDrawerVisible.value = true
+}
+
+// 从忘记密码切换到登录
+const switchToLoginFromForgot = () => {
+  forgotPasswordDrawerVisible.value = false
+  loginDrawerVisible.value = true
+}
 </script>
 
 <template>
@@ -59,13 +80,21 @@ const handleRegisterSuccess = () => {
     v-model="loginDrawerVisible"
     @login-success="handleLoginSuccess"
     @switch-register="switchToRegister"
-  />
+    @forgot-password="switchToForgotPassword"
+ />
 
   <!-- 全局注册抽屉 -->
   <RegisterDrawer
     v-model="registerDrawerVisible"
     @register-success="handleRegisterSuccess"
     @switch-login="switchToLogin"
+  />
+
+  <!-- 全局忘记密码抽屉 -->
+  <ForgotPasswordDrawer
+    v-model="forgotPasswordDrawerVisible"
+    @reset-success="handleForgotPasswordSuccess"
+    @switch-login="switchToLoginFromForgot"
   />
 </template>
 

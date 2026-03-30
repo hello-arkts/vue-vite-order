@@ -2,7 +2,7 @@
   <el-drawer
     v-model="drawerVisible"
     direction="btt"
-    size="60%"
+    :size="currentStep === 1 ? '60%' : '85%'"
     :show-close="false"
     :with-header="false"
     class="register-drawer"

@@ -2,7 +2,7 @@
   <el-drawer
     v-model="drawerVisible"
     direction="btt"
-    size="70%"
+    :size="currentStep === 1 ? '60%' : '85%'"
     :show-close="false"
     :with-header="false"
     class="forgot-password-drawer"
@@ -10,7 +10,7 @@
   >
     <div class="drawer-content">
       <!-- 标题 -->
-      <div class="forgot-title">{{ currentStep === 1 ? '忘记密码' : '设置新密码' }}</div>
+      <div class="forgot-title">{{ currentStep === 1 ? '修改密码' : '设置新密码' }}</div>
       
       <!-- 第一步：手机号和验证码 -->
       <template v-if="currentStep === 1">
@@ -136,7 +136,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
-import { getCode, forgotPassword } from '@/api/loginServe.js'
+import { getCode, updatePassword } from '@/api/index.js'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
@@ -282,16 +282,16 @@ const handleSubmit = async () => {
       formData.append('telephone', form.value.phone)
       formData.append('phoneCode', selectedCountry.value.code)
       formData.append('authCode', form.value.code)
-      formData.append('newPassword', form.value.newPassword)
+      formData.append('password', form.value.newPassword)
 
-      const response = await forgotPassword(formData)
+      const response = await updatePassword(formData)
       
       if (response.code === 200) {
         ElMessage.success('密码重置成功')
         emit('reset-success')
         closeDrawer()
       } else {
-        ElMessage.error(response.msg || '密码重置失败')
+        ElMessage.error( '密码重置失败')
       }
     } catch (error) {
       console.error('密码重置错误:', error)
