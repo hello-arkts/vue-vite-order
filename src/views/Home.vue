@@ -116,10 +116,21 @@
     </div>
 
     <!-- 登录抽屉 -->
-    <LoginDrawer v-model="loginDrawerVisible" @switch-register="handleSwitchToRegister" />
+    <LoginDrawer 
+      v-model="loginDrawerVisible" 
+      @switch-register="handleSwitchToRegister"
+      @forgot-password="handleForgotPassword"
+    />
     
     <!-- 注册抽屉 -->
     <RegisterDrawer v-model="registerDrawerVisible" @switch-login="handleSwitchToLogin" />
+    
+    <!-- 忘记密码抽屉 -->
+    <ForgotPasswordDrawer 
+      v-model="forgotPasswordDrawerVisible" 
+      @reset-success="handleResetSuccess"
+      @switch-login="handleSwitchToLoginFromForgot"
+    />
   </div>
 </template>
 
@@ -131,6 +142,7 @@ import CategoryTabs from '../components/CategoryTabs.vue'
 import CouponCard from '../components/CouponCard.vue'
 import LoginDrawer from '../components/LoginDrawer.vue'
 import RegisterDrawer from '../components/RegisterDrawer.vue'
+import ForgotPasswordDrawer from '../components/ForgotPasswordDrawer.vue'
 import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
 import {ElMessage} from "element-plus";
@@ -142,6 +154,7 @@ const avatarSeed = ref( localStorage.getItem('userInfo') || Math.floor(Math.rand
 const isLoggedIn = ref('')
 const loginDrawerVisible = ref(false)
 const registerDrawerVisible = ref(false)
+const forgotPasswordDrawerVisible = ref(false)
 
 const filteredCoupons = ref([])
 
@@ -194,6 +207,21 @@ const handleSwitchToRegister = () => {
 
 const handleSwitchToLogin = () => {
   registerDrawerVisible.value = false
+  loginDrawerVisible.value = true
+}
+
+const handleForgotPassword = () => {
+  loginDrawerVisible.value = false
+  forgotPasswordDrawerVisible.value = true
+}
+
+const handleResetSuccess = () => {
+  forgotPasswordDrawerVisible.value = false
+  loginDrawerVisible.value = true
+}
+
+const handleSwitchToLoginFromForgot = () => {
+  forgotPasswordDrawerVisible.value = false
   loginDrawerVisible.value = true
 }
 

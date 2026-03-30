@@ -35,3 +35,10 @@ export const setPassword = (params = {}) => {
     return post('/mall-portal/sso/setPassword', params)
 }
 
+/**
+ * 忘记密码/重置密码
+ */
+export const forgotPassword = (params = {}) => {
+    return post('/mall-portal/sso/forgotPassword', params)
+}
+

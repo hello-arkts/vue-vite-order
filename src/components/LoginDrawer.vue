@@ -60,6 +60,10 @@
             <img v-else src="../assets/icons/yn.svg" class="eye-icon-img" />
           </div>
         </div>
+        <!-- 忘记密码 -->
+        <div class="forgot-password">
+          <a href="#" class="forgot-password-btn" @click.prevent="goToForgotPassword">忘记密码?</a>
+        </div>
       </div>
       
       <!-- 登录按钮 -->
@@ -104,7 +108,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'login-success', 'switch-register'])
+const emit = defineEmits(['update:modelValue', 'login-success', 'switch-register', 'forgot-password'])
 
 const drawerVisible = ref(props.modelValue)
 const loginForm = ref({
@@ -162,6 +166,12 @@ watch(drawerVisible, (newValue) => {
 const goToRegister = () => {
   drawerVisible.value = false
   emit('switch-register')
+}
+
+// 跳转到忘记密码
+const goToForgotPassword = () => {
+  drawerVisible.value = false
+  emit('forgot-password')
 }
 
 const handleLogin = async () => {
@@ -398,6 +408,21 @@ const handleLogin = async () => {
 
 .login-btn-active:hover {
   background: #D32F2F !important;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.forgot-password-btn {
+  font-size: 13px;
+  color: #999999;
+  text-decoration: none;
+}
+
+.forgot-password-btn:hover {
+  color: #E53935;
 }
 
 .register-link {
