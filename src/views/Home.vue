@@ -10,7 +10,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="login" v-if="!isLoggedIn">登录</el-dropdown-item>
-              <el-dropdown-item command="logout" v-else type="danger">退出登录</el-dropdown-item>
+              <el-dropdown-item command="logout" v-if="isLoggedIn" type="danger">退出登录</el-dropdown-item>
+              <el-dropdown-item command="changePassword" v-if="isLoggedIn" type="danger">修改密码</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -125,7 +126,7 @@
     <!-- 注册抽屉 -->
     <RegisterDrawer v-model="registerDrawerVisible" @switch-login="handleSwitchToLogin" />
     
-    <!-- 忘记密码抽屉 -->
+    <!-- 修改密码抽屉 -->
     <ForgotPasswordDrawer 
       v-model="forgotPasswordDrawerVisible" 
       @reset-success="handleResetSuccess"
@@ -179,6 +180,8 @@ const handleCommand = (command) => {
     localStorage.removeItem('userInfo')
     localStorage.removeItem('token')
     ElMessage.success('退出登录成功')
+  } else if (command === 'changePassword') {
+    handleForgotPassword()
   }
 }
 
@@ -216,7 +219,10 @@ const handleForgotPassword = () => {
 }
 
 const handleResetSuccess = () => {
+  // 修改密码成功后，清空token
+  localStorage.removeItem('token')
   forgotPasswordDrawerVisible.value = false
+  // 修改密码成功后，重新登录
   loginDrawerVisible.value = true
 }
 
