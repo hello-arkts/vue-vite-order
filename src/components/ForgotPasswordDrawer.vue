@@ -116,10 +116,9 @@
         type="primary"
         size="large"
         class="submit-btn"
-        :class="{ 'confirm-btn': currentStep === 2 }"
+        :class="{ 'confirm-btn': currentStep === 2, 'submit-btn-active': canSubmit }"
         @click="handleSubmit"
         :loading="loading"
-        :disabled="!canSubmit"
       >
         {{ currentStep === 1 ? '下一步' : '确定' }}
       </el-button>
@@ -595,13 +594,14 @@ onUnmounted(() => {
   color: #999999;
 }
 
-.submit-btn:not(:disabled) {
-  background: linear-gradient(135deg, #FF6B6B 0%, #E53935 100%);
-  color: #FFFFFF;
-}
 
 .submit-btn:not(:disabled):hover {
   opacity: 0.9;
+}
+
+.submit-btn-active {
+  background: linear-gradient(135deg, #FF6B6B 0%, #E53935 100%) !important;
+  color: #FFFFFF !important;
 }
 
 .confirm-btn {
