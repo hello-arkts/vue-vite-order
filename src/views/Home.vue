@@ -24,7 +24,7 @@
     <!-- 快速通关区域 -->
     <el-card class="quick-section" shadow="never">
       <div class="section-header">
-        <span class="section-title">快速通关</span>
+        <span class="section-title">5星服务</span>
         <el-tag effect="dark" class="quick-tag" round>
           <img src="../assets/icons/tag.svg" alt="ROE" class="roe-icon">
           ROE行程客户免费
@@ -99,6 +99,21 @@
       </div>
     </el-card>
 
+    <!--底部广告-->
+    <div class="bottom-menu">
+      <div class="bottom-menu-content">
+        <div class="bottom-menu-left">
+          <div class="bottom-menu-title">泰国政府官方推荐</div>
+          <div class="bottom-menu-subtitle">体育旅游部, 文化部, 国家旅游局</div>
+        </div>
+        <div class="bottom-menu-right">
+          <img src="../assets/icons/hz.svg" alt="icon" class="bottom-menu-icon" />
+          <img src="../assets/icons/hz2.svg" alt="icon" class="bottom-menu-icon-2" />
+          <img src="../assets/icons/hz3.svg" alt="icon" class="bottom-menu-icon" />
+        </div>
+      </div>
+    </div>
+
     <!-- 登录抽屉 -->
     <LoginDrawer v-model="loginDrawerVisible" @switch-register="handleSwitchToRegister" />
     
@@ -161,7 +176,10 @@ const getCouponLists = async (type = 1) => {
     formData.append('pageSize', 999)
     const response = await getCouponList(formData)
     if (response.code === 200) {
-      filteredCoupons.value = response.data.list || []
+      for (let i = 0; i < 20; i++) {
+        filteredCoupons.value = [...filteredCoupons.value, ...response.data.list]
+      }
+
     }
   } catch (error) {
     console.error('获取优惠券列表失败:', error)
@@ -192,6 +210,69 @@ onMounted(() => {
 .home-page {
   min-height: 100vh;
   background: var(--bg-gradient-yellow);
+  padding-bottom: 59px;
+}
+
+/* 底部菜单 */
+.bottom-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 59px;
+  background: #FFFFFF;
+  border-radius: 0px 0px 0px 0px;
+  border-top: 1px solid #E8E8E8;
+  z-index: 100;
+}
+
+.bottom-menu-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bottom-menu-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom-menu-title {
+  font-size: var(--font-base);
+  font-weight: bold;
+  color: var(--text-primary);
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+}
+
+.bottom-menu-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: #959595;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+}
+
+.bottom-menu-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-menu-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.bottom-menu-icon-2 {
+  width: 20px;
+  height: 31px;
 }
 
 /* 顶部区域 */
@@ -409,6 +490,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  justify-items: center;
 }
 
 /* ============ 响应式设计 ============ */
@@ -484,6 +566,7 @@ onMounted(() => {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     padding: 0 20px;
+    justify-items: center;
   }
 }
 
@@ -541,6 +624,7 @@ onMounted(() => {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     padding: 0 16px;
+    justify-items: center;
   }
 }
 </style>

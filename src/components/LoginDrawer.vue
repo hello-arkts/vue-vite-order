@@ -51,11 +51,14 @@
           <img src="../assets/icons/mima.svg" class="input-icon password-left-icon" />
           <el-input
             v-model="loginForm.password"
+            :type="showPassword ? 'text' : 'password'"
             placeholder="请输入密码"
-            type="password"
-            show-password
             class="password-input"
           />
+          <div class="eye-icon-wrapper" @click="showPassword = !showPassword">
+            <img v-if="showPassword" src="../assets/icons/yy.svg" class="eye-icon-img" />
+            <img v-else src="../assets/icons/yn.svg" class="eye-icon-img" />
+          </div>
         </div>
       </div>
       
@@ -108,6 +111,7 @@ const loginForm = ref({
   phone: '',
   password: ''
 })
+const showPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
 
@@ -353,6 +357,21 @@ const handleLogin = async () => {
 
 .password-input :deep(.el-input__inner::placeholder) {
   color: #999999;
+}
+
+.eye-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.eye-icon-img {
+  width: 20px;
+  height: 20px;
 }
 
 .login-btn {

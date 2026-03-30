@@ -166,31 +166,17 @@ body {
   }
 }
 
-/* 滚动条样式 - 桌面端显示 */
+/* 隐藏所有滚动条 */
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
+  display: none;
 }
 
-@media (min-width: 992px) {
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--bg-page);
-    border-radius: 3px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-light);
-    border-radius: 3px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-tertiary);
-  }
+/* Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* 点击态 */
