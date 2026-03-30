@@ -28,6 +28,9 @@
     style="border-radius: 26px 26px 0 0;background: #F9F5F6;"
   >
     <div class="drawer-content">
+      <!--锁弹窗按钮条-->
+      <Popuplock />
+
       <!-- 商户信息 -->
       <div class="merchant-info">
         <el-avatar :size="61">
@@ -35,6 +38,7 @@
         </el-avatar>
         <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
         <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
+        <el-button type="primary" size="small" class="share-text">分享</el-button>
       </div>
 
       <!-- 二维码区域 -->
@@ -142,6 +146,7 @@ import {mapApps} from "@/utils/curatedList.js"
 
 import QRCode from 'qrcode'
 import { openMapApp } from '@/utils/openMap.js'
+import Popuplock from '@/components/Popuplock.vue'
 
 const props = defineProps({
   coupon: {
@@ -275,7 +280,7 @@ const getCouponDetails = async (id) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .coupon-card {
   display: block;
   width: 168px;
@@ -356,12 +361,31 @@ const getCouponDetails = async (id) => {
   margin-top: 6px;
 }
 
+.drawer-content {
+  padding: 0 20px 20px;
+}
+
 /* 商户信息 */
 .merchant-info {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 16px;
+  margin-top: 10px;
+  .share-text {
+    width: 40px;
+    background: var(--bg-transparent);
+    border: 1px solid var(--bg-card);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-base);
+    color: var(--text-primary);
+    font-weight: bold;
+    text-align: center;
+    font-style: normal;
+    text-transform: none;
+    position: absolute;
+    right: 20px;
+  }
 }
 
 .merchant-info :deep(.el-avatar) {
@@ -628,6 +652,7 @@ const getCouponDetails = async (id) => {
   background: linear-gradient(135deg, #3658c8 0%, #4a6ee8 100%);
 }
 
+
 /* ============ 响应式设计 ============ */
 
 /* 平板端 (768px+) */
@@ -644,10 +669,6 @@ const getCouponDetails = async (id) => {
   
   .card-content {
     gap: 10px;
-  }
-  
-  .drawer-content {
-    padding: 28px 24px;
   }
   
   .merchant-info :deep(.el-avatar) {
@@ -708,10 +729,6 @@ const getCouponDetails = async (id) => {
     gap: 8px;
   }
   
-  .drawer-content {
-    padding: 24px 20px;
-  }
-  
   .merchant-info :deep(.el-avatar) {
     width: 80px !important;
     height: 80px !important;
@@ -762,6 +779,7 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 20px;
 }
 
 .map-option {
@@ -858,4 +876,10 @@ const getCouponDetails = async (id) => {
     font-size: var(--font-base);
   }
 }
+</style>
+
+<style>
+  .el-drawer.coupon-drawer .el-drawer__body {
+    padding: 0 !important;
+  }
 </style>
