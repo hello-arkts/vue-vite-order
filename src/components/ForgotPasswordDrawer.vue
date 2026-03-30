@@ -59,10 +59,10 @@
             />
             <span
               class="send-code-btn"
-              :class="{ disabled: countdown > 0 || !isPhoneValid }"
+              :class="{ disabled: countdown > 0 || !isPhoneValid || sendingCode }"
               @click="sendCode"
             >
-              {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+              {{ sendingCode ? '发送中...' : (countdown > 0 ? `${countdown}s` : '获取验证码') }}
             </span>
           </div>
         </div>
@@ -135,7 +135,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
-import { getCode, updatePassword } from '@/api/index.js'
+import { getCode, updatePassword, checkAuthCode } from '@/api/index.js'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
@@ -153,6 +153,7 @@ const countdown = ref(0)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
 const loading = ref(false)
+const sendingCode = ref(false)
 let countdownTimer = null
 
 const form = ref({
@@ -216,7 +217,7 @@ const sendCode = async () => {
   if (countdown.value > 0) return
   
   try {
-    loading.value = true
+    sendingCode.value = true
     const formData = new FormData()
     formData.append('telephone', form.value.phone)
     formData.append('phoneCode', selectedCountry.value.code)
@@ -232,7 +233,7 @@ const sendCode = async () => {
     console.error('发送验证码错误:', error)
     ElMessage.error('发送失败，请稍后重试')
   } finally {
-    loading.value = false
+    sendingCode.value = false
   }
 }
 
@@ -256,13 +257,32 @@ const handleSubmit = async () => {
       return
     }
     
-    if (form.value.code.length < 4) {
+    if (form.value.code.length < 6) {
       ElMessage.error('请输入正确的验证码')
       return
     }
     
-    // 进入第二步
-    currentStep.value = 2
+    // 校验验证码
+    loading.value = true
+    try {
+      const formData = new FormData()
+      formData.append('telephone', form.value.phone)
+      formData.append('phoneCode', selectedCountry.value.code)
+      formData.append('authCode', form.value.code)
+      
+      const response = await checkAuthCode(formData)
+      
+      if (response.code === 200) {
+        // 验证码正确，进入第二步
+        currentStep.value = 2
+      } else {
+        ElMessage.error( '验证码错误')
+      }
+    } catch (error) {
+      ElMessage.error('验证码校验失败，请稍后重试')
+    } finally {
+      loading.value = false
+    }
   } else {
     // 第二步：提交重置密码
     if (!isPasswordValid.value) {
@@ -325,6 +345,7 @@ const resetForm = () => {
   showNewPassword.value = false
   showConfirmPassword.value = false
   countdown.value = 0
+  sendingCode.value = false
   if (countdownTimer) {
     clearInterval(countdownTimer)
   }

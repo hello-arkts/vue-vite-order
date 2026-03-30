@@ -64,10 +64,10 @@
             />
             <span
               class="send-code-btn"
-              :disabled="countdown > 0 || !isPhoneValid"
+              :class="{ disabled: countdown > 0 || !isPhoneValid || sendingCode }"
               @click="sendCode"
             >
-              {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+              {{ sendingCode ? '发送中...' : (countdown > 0 ? `${countdown}s` : '获取验证码') }}
             </span>
           </div>
         </div>
@@ -143,7 +143,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
-import {getCode, registerAccount, setPassword} from '@/api/loginServe.js'
+import {getCode, registerAccount, setPassword, checkAuthCode} from '@/api/loginServe.js'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({
@@ -162,6 +162,7 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
+const sendingCode = ref(false)
 let countdownTimer = null
 
 const registerForm = ref({
@@ -225,7 +226,7 @@ const sendCode = async () => {
   }
   
   try {
-    loading.value = true
+    sendingCode.value = true
     const formData = new FormData()
     formData.append('telephone', registerForm.value.phone)
     formData.append('phoneCode', selectedCountry.value.code)
@@ -241,7 +242,7 @@ const sendCode = async () => {
     console.error('发送验证码错误:', error)
     ElMessage.error('发送失败，请稍后重试')
   } finally {
-    loading.value = false
+    sendingCode.value = false
   }
 }
 
@@ -265,19 +266,34 @@ const handleSubmit = async () => {
       ElMessage.error('请输入正确的验证码')
       return
     }
-    // 注册
-    const formData = new FormData()
-    formData.append('telephone', registerForm.value.phone)
-    formData.append('phoneCode', selectedCountry.value.code)
-    formData.append('authCode', registerForm.value.code)
-    formData.append('invitationCode', 0)
-
-    const response = await registerAccount(formData)
-    if (response.code === 200) {
-      // 进入第二步
-      currentStep.value = 2
-    } else {
-      ElMessage.error(response.msg || '注册失败')
+    
+    // 校验验证码
+    loading.value = true
+    try {
+      const checkFormData = new FormData()
+      checkFormData.append('telephone', registerForm.value.phone)
+      checkFormData.append('phoneCode', selectedCountry.value.code)
+      checkFormData.append('authCode', registerForm.value.code)
+      
+      const checkResponse = await checkAuthCode(checkFormData)
+      
+      if (checkResponse.code === 200) {
+        // 注册账号
+        checkFormData.append('invitationCode', 0)
+        const response = await registerAccount(checkFormData)
+        if (response.code === 200) {
+          // 注册成功，进入第二步
+          currentStep.value = 2
+        } else {
+          ElMessage.error( '注册失败，请稍后重试')
+        }
+      } else {
+        ElMessage.error( '验证码错误')
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
     }
   } else {
     // 第二步：提交注册
@@ -349,6 +365,7 @@ const resetForm = () => {
   showPassword.value = false
   showConfirmPassword.value = false
   countdown.value = 0
+  sendingCode.value = false
   if (countdownTimer) {
     clearInterval(countdownTimer)
   }

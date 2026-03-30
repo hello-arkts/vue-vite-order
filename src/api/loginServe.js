@@ -22,6 +22,13 @@ export const getCode = (params = {}) => {
 }
 
 /**
+ * 校验验证码
+ */
+export const checkAuthCode = (params = {}) => {
+    return post('/mall-portal/util/checkAuthCode', params)
+}
+
+/**
  * 注册账号
  */
 export const registerAccount = (params = {}) => {
