@@ -57,13 +57,14 @@
               class="code-input"
               maxlength="6"
             />
-            <span
+            <button
               class="send-code-btn"
               :class="{ disabled: countdown > 0 || !isPhoneValid || sendingCode }"
               @click="sendCode"
+              :disabled="sendingCode || countdown > 0"
             >
               {{ sendingCode ? '发送中...' : (countdown > 0 ? `${countdown}s` : '获取验证码') }}
-            </span>
+            </button>
           </div>
         </div>
       </template>

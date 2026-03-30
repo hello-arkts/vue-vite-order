@@ -62,13 +62,15 @@
               class="code-input"
               maxlength="6"
             />
-            <span
+            {{countdown > 0 || !isPhoneValid || sendingCode }}
+            <button
               class="send-code-btn"
               :class="{ disabled: countdown > 0 || !isPhoneValid || sendingCode }"
               @click="sendCode"
+              :disabled="sendingCode || countdown > 0"
             >
               {{ sendingCode ? '发送中...' : (countdown > 0 ? `${countdown}s` : '获取验证码') }}
-            </span>
+            </button>
           </div>
         </div>
       </template>
@@ -115,10 +117,9 @@
         type="primary"
         size="large"
         class="register-btn"
-        :class="{ 'confirm-btn': currentStep === 2 }"
+        :class="{ 'confirm-btn': currentStep === 2,'submit-btn-active': canSubmit }"
         @click="handleSubmit"
         :loading="loading"
-        :disabled="!canSubmit"
       >
         {{ currentStep === 1 ? '注册' : '确定' }}
       </el-button>
@@ -205,7 +206,7 @@ const isPasswordValid = computed(() => {
 const canSubmit = computed(() => {
   if (currentStep.value === 1) {
     return isPhoneValid.value && 
-           registerForm.value.code.length >= 4
+           registerForm.value.code.length >= 6
   } else {
     return isPasswordValid.value && 
            registerForm.value.password === registerForm.value.confirmPassword
@@ -224,14 +225,14 @@ const sendCode = async () => {
     ElMessage.error('请输入正确的手机号')
     return
   }
-  
+  console.log('xixi')
   try {
     sendingCode.value = true
     const formData = new FormData()
     formData.append('telephone', registerForm.value.phone)
     formData.append('phoneCode', selectedCountry.value.code)
     const response = await getCode(formData)
-    
+
     if (response.code === 200) {
       ElMessage.success('验证码已发送')
       startCountdown()
@@ -631,7 +632,7 @@ onUnmounted(() => {
   color: #999999;
 }
 
-.register-btn:not(:disabled) {
+.submit-btn-active {
   background: linear-gradient(135deg, #FF6B6B 0%, #E53935 100%);
   color: #FFFFFF;
 }
