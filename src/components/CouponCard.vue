@@ -85,7 +85,7 @@
               </div>
               <el-button type="text" class="copy-address-btn" @click="copyAddress(store)">复制地址</el-button>
             </div>
-          </div>
+          </div>  
         </div>
         <el-button class="select-store-btn" type="primary" size="small" round @click="handleSelectStore">选择门店</el-button>
       </div>
@@ -609,18 +609,17 @@ const getCouponDetails = async (id) => {
 
 .address-dropdown {
   position: absolute;
-  bottom: 0;
+  top: -10px;
   left: 0;
   right: 0;
   width: 100%;
-  transform: translateY(-70%);
-  margin-bottom: 0;
+  transform: translateY(-100%);
   max-height: 200px;
   overflow-y: auto;
   border-top: 1px solid var(--border-light);
   background: #fff;
   border-radius: var(--radius-md);
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -2px 8px rgb(0 0 0 / 0.17);
   box-sizing: border-box;
   z-index: 10;
 }
