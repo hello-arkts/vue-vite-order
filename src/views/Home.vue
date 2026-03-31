@@ -46,7 +46,7 @@
     </el-card>
 
     <!-- 活动Banner -->
-    <div class="banner-section" @click="goToJump">
+    <div class="banner-section" @click="goToParty">
       <div class="banner">
         <div class="banner-left">
           <img src="../assets/icons/tq.svg" alt="flag" style="width: 24px; height: 24px;" />
@@ -160,8 +160,12 @@ const forgotPasswordDrawerVisible = ref(false)
 const filteredCoupons = ref([])
 
 const goToJump = () => {
+  router.push('/jump')
+}
+const goToParty = () => {
   router.push('/party')
 }
+
 
 const goToCouponList = () => {
   router.push('/coupons')
