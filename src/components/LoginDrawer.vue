@@ -1,12 +1,7 @@
 <template>
-  <el-drawer
+  <DraggableDrawer
     v-model="drawerVisible"
-    direction="btt"
-    size="60%"
-    :show-close="false"
-    :with-header="false"
-    class="login-drawer"
-    style="border-radius: 26px 26px 0 0; background: #FFFFFF;"
+    initial-size="60%"
   >
     <div class="drawer-content">
       <!-- 标题 -->
@@ -91,7 +86,7 @@
         </el-checkbox>
       </div>
     </div>
-  </el-drawer>
+  </DraggableDrawer>
 </template>
 
 <script setup>
@@ -100,6 +95,7 @@ import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { login } from '@/api/loginServe.js'
 import { countryCodes } from '@/utils/curatedList.js'
+import DraggableDrawer from '@/components/DraggableDrawer.vue'
 
 const props = defineProps({
   modelValue: {

@@ -101,14 +101,9 @@
     </div>
 
     <!-- 地图应用选择抽屉 -->
-    <el-drawer
+    <DraggableDrawer
       v-model="mapDialogVisible"
-      direction="btt"
-      size="60%"
-      :show-close="true"
-      :with-header="false"
-      class="map-drawer"
-      style="border-radius: 26px 26px 0 0;background: #F9F5F6;"
+      initial-size="60%"
     >
       <div class="map-options">
         <div
@@ -127,7 +122,7 @@
           <el-icon class="arrow-icon"><ArrowRight /></el-icon>
         </div>
       </div>
-    </el-drawer>
+    </DraggableDrawer>
   </DraggableDrawer>
 </template>
 

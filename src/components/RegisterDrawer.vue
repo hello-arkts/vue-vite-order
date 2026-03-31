@@ -1,12 +1,7 @@
 <template>
-  <el-drawer
+  <DraggableDrawer
     v-model="drawerVisible"
-    direction="btt"
-    :size="currentStep === 1 ? '60%' : '85%'"
-    :show-close="false"
-    :with-header="false"
-    class="register-drawer"
-    style="border-radius: 26px 26px 0 0; background: #FFFFFF;"
+    :initial-size="currentStep === 1 ? '60%' : '85%'"
   >
     <div class="drawer-content">
       <!-- 返回按钮 -->
@@ -136,7 +131,7 @@
         </el-checkbox>
       </div>
     </div>
-  </el-drawer>
+  </DraggableDrawer>
 </template>
 
 <script setup>
@@ -144,6 +139,7 @@ import { ref, defineProps, defineEmits, watch, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
 import {getCode, registerAccount, setPassword, checkAuthCode} from '@/api/loginServe.js'
+import DraggableDrawer from '@/components/DraggableDrawer.vue'
 import { countryCodes } from '@/utils/curatedList.js'
 
 const props = defineProps({

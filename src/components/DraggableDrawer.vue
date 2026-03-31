@@ -48,7 +48,7 @@ const props = defineProps({
 })
 
 const LONG_PRESS_DURATION = 100
-const MOVE_THRESHOLD = 1
+const MOVE_THRESHOLD = 0.5
 
 const emit = defineEmits(['update:modelValue', 'drag-start', 'drag-end', 'height-change'])
 
@@ -238,7 +238,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #F9F5F6;
+  background: white;
   border-radius: 26px 26px 0 0;
   overflow: hidden;
   touch-action: none;
@@ -282,5 +282,6 @@ onUnmounted(() => {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  padding: 20px;
 }
 </style>

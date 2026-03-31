@@ -1,12 +1,7 @@
 <template>
-  <el-drawer
+  <DraggableDrawer
     v-model="drawerVisible"
-    direction="btt"
-    :size="currentStep === 1 ? '60%' : '85%'"
-    :show-close="false"
-    :with-header="false"
-    class="forgot-password-drawer"
-    style="border-radius: 26px 26px 0 0; background: #FFFFFF;"
+    :initial-size="currentStep === 1 ? '60%' : '85%'"
   >
     <div class="drawer-content">
       <!-- 标题 -->
@@ -129,7 +124,7 @@
         <a href="#" class="switch-login-btn" @click.prevent="switchToLogin">切换登录</a>
       </div>
     </div>
-  </el-drawer>
+  </DraggableDrawer>
 </template>
 
 <script setup>
@@ -138,6 +133,7 @@ import { ElMessage } from 'element-plus'
 import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue'
 import { getCode, updatePassword, checkAuthCode } from '@/api/index.js'
 import { countryCodes } from '@/utils/curatedList.js'
+import DraggableDrawer from '@/components/DraggableDrawer.vue'
 
 const props = defineProps({
   modelValue: {
