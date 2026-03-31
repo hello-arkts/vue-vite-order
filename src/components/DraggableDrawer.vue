@@ -12,9 +12,9 @@
       >
         <div class="drawer-container">
           <div class="drag-handle">
-             <div class="drag-indicator" @click.stop="closeDrawer">
-               <div class="drag-indicator-line"></div>
-             </div>
+            <div class="drag-indicator">
+              <div class="drag-indicator-line"></div>
+            </div>
           </div>
           <div class="drawer-content">
             <slot></slot>
@@ -27,8 +27,6 @@
 
 <script setup>
 import { ref, watch, computed, onUnmounted } from 'vue'
-import PopupLock from '@/components/PopupLock.vue'
-
 
 const props = defineProps({
   modelValue: {
@@ -49,6 +47,9 @@ const props = defineProps({
   }
 })
 
+const LONG_PRESS_DURATION = 100
+const MOVE_THRESHOLD = 1
+
 const emit = defineEmits(['update:modelValue', 'drag-start', 'drag-end', 'height-change'])
 
 const isVisible = ref(props.modelValue)
@@ -57,7 +58,9 @@ const isDragging = ref(false)
 
 let startY = 0
 let startHeight = 0
-let hasMoved = false
+let startTime = 0
+let startX = 0
+let startYPos = 0
 let currentHeight = ref(95)
 
 watch(() => props.modelValue, (val) => {
@@ -88,47 +91,55 @@ const closeDrawer = () => {
   }, 300)
 }
 
-const getTarget = (e) => {
-  const touch = e.touches ? e.touches[0] : e
-  return document.elementFromPoint(touch.clientX, touch.clientY)
-}
-
 const onTouchStart = (e) => {
-  const target = getTarget(e)
-  console.log((target.closest('.drag-handle')),'xixi')
-  if (target && !(target.closest('.drag-indicator'))) return
-
-  e.preventDefault()
-  hasMoved = false
-  isDragging.value = true
-  startY = e.touches[0].clientY
+  const touch = e.touches[0]
+  startTime = Date.now()
+  startX = touch.clientX
+  startYPos = touch.clientY
+  startY = touch.clientY
   startHeight = currentHeight.value
+  isDragging.value = false
   document.body.style.overflow = 'hidden'
-  emit('drag-start')
 }
 
 const onMouseDown = (e) => {
-  const target = e.target
-  if (target && !(target.closest('.drag-indicator'))) return
-
-  hasMoved = false
-  isDragging.value = true
+  startTime = Date.now()
+  startX = e.clientX
+  startYPos = e.clientY
   startY = e.clientY
   startHeight = currentHeight.value
+  isDragging.value = false
 
   document.addEventListener('mousemove', onMouseMove)
   document.addEventListener('mouseup', onMouseUp)
   document.body.style.overflow = 'hidden'
-  emit('drag-start')
 }
 
 const onMouseMove = (e) => {
-  if (!isDragging.value) return
-  hasMoved = true
+  const deltaTime = Date.now() - startTime
+  const deltaX = Math.abs(e.clientX - startX)
+  const deltaY = Math.abs(e.clientY - startYPos)
+
+  if (!isDragging.value && deltaTime < LONG_PRESS_DURATION) return
+  if (!isDragging.value && deltaX < MOVE_THRESHOLD && deltaY < MOVE_THRESHOLD) return
+
+  if (!isDragging.value) {
+    isDragging.value = true
+    emit('drag-start')
+  }
+
   handleDrag(e.clientY)
 }
 
 const onMouseUp = () => {
+  const deltaTime = Date.now() - startTime
+  const deltaX = Math.abs(event.clientX - startX)
+  const deltaY = Math.abs(event.clientY - startYPos)
+
+  if (!isDragging.value && deltaTime < LONG_PRESS_DURATION && deltaX < MOVE_THRESHOLD && deltaY < MOVE_THRESHOLD) {
+    closeDrawer()
+  }
+
   endDrag()
   document.removeEventListener('mousemove', onMouseMove)
   document.removeEventListener('mouseup', onMouseUp)
@@ -153,23 +164,43 @@ const handleDrag = (clientY) => {
 }
 
 const onTouchMove = (e) => {
-  if (!isDragging.value) return
+  const touch = e.touches[0]
+  const deltaTime = Date.now() - startTime
+  const deltaX = Math.abs(touch.clientX - startX)
+  const deltaY = Math.abs(touch.clientY - startYPos)
+
+  if (!isDragging.value && deltaTime < LONG_PRESS_DURATION) return
+  if (!isDragging.value && deltaX < MOVE_THRESHOLD && deltaY < MOVE_THRESHOLD) return
+
+  if (!isDragging.value) {
+    e.preventDefault()
+    isDragging.value = true
+    emit('drag-start')
+  }
+
   e.preventDefault()
-  hasMoved = true
-  handleDrag(e.touches[0].clientY)
+  handleDrag(touch.clientY)
 }
 
-const onTouchEnd = () => {
+const onTouchEnd = (e) => {
+  const touch = e.changedTouches[0]
+  const deltaTime = Date.now() - startTime
+  const deltaX = Math.abs(touch.clientX - startX)
+  const deltaY = Math.abs(touch.clientY - startYPos)
+
+  if (!isDragging.value && deltaTime < LONG_PRESS_DURATION && deltaX < MOVE_THRESHOLD && deltaY < MOVE_THRESHOLD) {
+    closeDrawer()
+  }
+
   endDrag()
 }
 
 const endDrag = () => {
   if (isDragging.value) {
     isDragging.value = false
-    hasMoved = false
-    document.body.style.overflow = ''
     emit('drag-end')
   }
+  document.body.style.overflow = ''
 }
 
 const setHeight = (height) => {
