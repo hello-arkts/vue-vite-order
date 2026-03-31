@@ -4,15 +4,17 @@
       <div
         class="drawer-wrapper"
         :style="wrapperStyle"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
-        @mousedown="onMouseDown"
         @click.stop
       >
         <div class="drawer-container">
           <div class="drag-handle">
-            <div class="drag-indicator">
+            <div
+              class="drag-indicator"
+              @touchstart="onTouchStart"
+              @touchmove="onTouchMove"
+              @touchend="onTouchEnd"
+              @mousedown="onMouseDown"
+            >
               <div class="drag-indicator-line"></div>
             </div>
           </div>
