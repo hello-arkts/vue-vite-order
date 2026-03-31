@@ -16,7 +16,7 @@
     >
       <div class="contact-drawer-content">
         <div class="qrcode-section">
-          <img src="../assets/icons/wexin.png" alt="客服二维码" class="qrcode-canvas">
+          <img src="../assets/icons/wexin.png" alt="客服二维码" class="qrcode-canvas" draggable="true">
           <p class="qrcode-tip">长按保存到手机</p>
         </div>
       </div>
