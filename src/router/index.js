@@ -15,6 +15,11 @@ const routes = [
     path: '/jump',
     name: 'Jump',
     component: () => import('../views/JumpPage.vue')
+  },
+  {
+    path: '/party',
+    name: 'Party',
+    component: () => import('../views/AdvertisementList.vue')
   }
 ]
 

@@ -160,7 +160,7 @@ const forgotPasswordDrawerVisible = ref(false)
 const filteredCoupons = ref([])
 
 const goToJump = () => {
-  router.push('/jump')
+  router.push('/party')
 }
 
 const goToCouponList = () => {
@@ -240,7 +240,7 @@ onMounted(() => {
 .home-page {
   min-height: 100vh;
   background: var(--bg-gradient-yellow);
-  padding-bottom: 59px;
+  padding-bottom: 50px;
 }
 
 /* 底部菜单 */

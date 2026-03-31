@@ -135,7 +135,6 @@ import {mapApps} from "@/utils/curatedList.js"
 
 import QRCode from 'qrcode'
 import { openMapApp } from '@/utils/openMap.js'
-import Popuplock from '@/components/Popuplock.vue'
 import DraggableDrawer from '@/components/DraggableDrawer.vue'
 
 const props = defineProps({
@@ -352,7 +351,6 @@ const getCouponDetails = async (id) => {
 }
 
 .drawer-content {
-  padding: 0 20px 20px;
 }
 
 /* 商户信息 */
