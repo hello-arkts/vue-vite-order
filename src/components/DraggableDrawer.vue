@@ -66,14 +66,18 @@ let startYPos = 0
 let currentHeight = ref(95)
 
 watch(() => props.modelValue, (val) => {
-  isVisible.value = val
-  if (val && props.initialSize) {
+  if (val) {
+    opened.value = false
     currentHeight.value = parseInt(props.initialSize)
-    requestAnimationFrame(() => {
+    isVisible.value = true
+    setTimeout(() => {
       opened.value = true
-    })
+    }, 10)
   } else {
     opened.value = false
+    setTimeout(() => {
+      isVisible.value = false
+    }, 300)
   }
 })
 
