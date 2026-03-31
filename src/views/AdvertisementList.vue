@@ -25,8 +25,12 @@
 import NavBar from "@/components/NavBar.vue";
 import { onMounted, ref } from 'vue'
 import { getAdvertisementList } from '@/api/index.js'
+import { useRouter } from "vue-router";
+import { useAdvertisementStore } from '@/store/advertisement.js';
 
 const addAdvertisementList = ref([])
+const router = useRouter()
+const advertisementStore = useAdvertisementStore()
 
 const getAdvertisementListData = async () => {
 const res = await getAdvertisementList()
@@ -36,8 +40,9 @@ const res = await getAdvertisementList()
 }
 
 const handleClick = (item) => {
-  if (item.url) {
-    window.location.href = item.url
+  if (item) {
+    advertisementStore.setCurrentAd(item)
+    router.push('/jump')
   }
 }
 
