@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bar">
+  <div class="nav-bar" :style="{ paddingBottom: paddingBottom + 'px' }">
     <div class="nav-left" @click="handleBack">
       <img src="../assets/icons/fh.svg" alt="返回" width="24" height="24" />
     </div>
@@ -24,6 +24,10 @@ const props = defineProps({
   showShare: {
     type: Boolean,
     default: false
+  },
+  paddingBottom: {
+    type: Number,
+    default: 0
   }
 })
 

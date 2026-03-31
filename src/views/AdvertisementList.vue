@@ -1,6 +1,6 @@
 <template>
   <div class="party-page">
-    <NavBar title="派对旅行" />
+    <NavBar title="派对旅行" :padding-bottom="16" />
     <div class="party-page-container">
       <div class="advertisement-list">
         <div
@@ -54,8 +54,17 @@ onMounted(() => {
   flex-direction: column;
 }
 
+:deep(.nav-bar) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #FBF9ED;
+}
+
 .party-page-container {
-  padding: 8px 16px;
+  padding: 60px 16px 8px 16px;
   display: flex;
   flex: 1;
 }
