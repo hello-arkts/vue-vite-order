@@ -18,19 +18,13 @@
   </el-card>
 
   <!-- 优惠券详情抽屉 -->
-  <el-drawer
+  <DraggableDrawer
     v-model="drawerVisible"
-    direction="btt"
-    size="95%"
-    :show-close="false"
-    :with-header="false"
-    class="coupon-drawer"
-    style="border-radius: 26px 26px 0 0;background: #F9F5F6;"
+    initial-size="95%"
+    min-height="30%"
+    max-height="95%"
   >
     <div class="drawer-content">
-      <!--锁弹窗按钮条-->
-      <Popuplock />
-
       <!-- 商户信息 -->
       <div class="merchant-info">
         <el-avatar :size="61">
@@ -134,7 +128,7 @@
         </div>
       </div>
     </el-drawer>
-  </el-drawer>
+  </DraggableDrawer>
 </template>
 
 <script setup>
@@ -147,6 +141,7 @@ import {mapApps} from "@/utils/curatedList.js"
 import QRCode from 'qrcode'
 import { openMapApp } from '@/utils/openMap.js'
 import Popuplock from '@/components/Popuplock.vue'
+import DraggableDrawer from '@/components/DraggableDrawer.vue'
 
 const props = defineProps({
   coupon: {
