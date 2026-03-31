@@ -78,14 +78,16 @@
                 :key="index"
                 class="address-item"
                 :class="{ 'active': selectedStoreId === store.id }"
-                @click="selectStore(store, index)"
             >
-              <div class="store-name">{{ store.name }}</div>
-              <div class="store-detail">{{ store.address }}</div>
+              <div @click="selectStore(store, index)">
+                <div class="store-name">{{ store.name }}</div>
+                <div class="store-detail">{{ store.address }}</div>
+              </div>
+              <el-button type="text" class="copy-address-btn" @click="copyAddress(store)">复制地址</el-button>
             </div>
           </div>
         </div>
-        <el-button class="copy-address-btn" type="primary" size="small" round @click="copyAddress">选择门店</el-button>
+        <el-button class="select-store-btn" type="primary" size="small" round @click="handleSelectStore">选择门店</el-button>
       </div>
 
       <!-- 导航按钮 -->
@@ -222,9 +224,13 @@ const openDrawer = () => {
   getCouponDetails(props.coupon.id)
 }
 
-const copyAddress = () => {
-  navigator.clipboard?.writeText(selectedStoreAddress.value)
+const copyAddress = (item) => {
+  navigator.clipboard?.writeText(item.address)
   ElMessage.success('地址已复制')
+}
+
+const handleSelectStore = () => {
+  addressDropdownVisible.value = true
 }
 
 const handleNavigation = () => {
@@ -529,6 +535,7 @@ const getCouponDetails = async (id) => {
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
+  position: relative;
 }
 
 /* 门店地址 */
@@ -538,12 +545,11 @@ const getCouponDetails = async (id) => {
   background: #FFFFFF;
   border-radius: var(--radius-md);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  position: relative;
   min-width: 0;
 }
 
-/* 复制地址按钮 */
-.copy-address-btn {
+/* 选择门店按钮 */
+.select-store-btn {
   align-self: flex-start;
   flex-shrink: 0;
   height: 40px;
@@ -551,6 +557,16 @@ const getCouponDetails = async (id) => {
   font-size: var(--font-sm);
   background: #5668F4;
   border-radius: 25px 25px 25px 25px;
+}
+
+.copy-address-btn {
+  width: 80px;
+  height: 100%;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  padding: 4px 6px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
 }
 
 .address-row {
@@ -593,11 +609,12 @@ const getCouponDetails = async (id) => {
 
 .address-dropdown {
   position: absolute;
-  bottom: 100%;
+  bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  margin-bottom: 8px;
+  transform: translateY(-70%);
+  margin-bottom: 0;
   max-height: 200px;
   overflow-y: auto;
   border-top: 1px solid var(--border-light);
@@ -605,14 +622,17 @@ const getCouponDetails = async (id) => {
   border-radius: var(--radius-md);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
+  z-index: 10;
 }
 
 .address-item {
-  padding: 10px 0;
   cursor: pointer;
   transition: background-color 0.2s ease;
   border-radius: 8px;
   padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .address-item:hover {

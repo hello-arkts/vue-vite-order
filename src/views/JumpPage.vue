@@ -16,7 +16,7 @@
     >
       <div class="contact-drawer-content">
         <div class="qrcode-section">
-          <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
+          <img :src="currentAd?.qrcode" alt="客服二维码" class="qrcode-canvas">
           <p class="qrcode-tip">长按保存到手机</p>
         </div>
       </div>
@@ -36,37 +36,11 @@ const currentAd = advertisementStore.currentAd
 const contactDrawerVisible = ref(false)
 const qrCanvas = ref(null)
 
-const wechatWorkUrl = 'https://work.weixin.qq.com/wework_admin/join?vcode=76ed8f937061301e880d9b749eef32fe&r=futureentrance_wqq'
-
-const generateQrCode = async () => {
-  await nextTick()
-  if (qrCanvas.value) {
-    try {
-      await QRCode.toCanvas(qrCanvas.value, wechatWorkUrl, {
-        width: 200,
-        margin: 2,
-        color: {
-          dark: '#000000',
-          light: '#FFFFFF'
-        }
-      })
-    } catch (error) {
-      console.error('生成二维码失败:', error)
-    }
-  }
-}
 
 const handleClick = () => {
   advertisementStore.setCurrentAd({})
 }
 
-watch(contactDrawerVisible, (val) => {
-  if (val) {
-    setTimeout(() => {
-      generateQrCode()
-    }, 100)
-  }
-})
 </script>
 
 <style scoped>
