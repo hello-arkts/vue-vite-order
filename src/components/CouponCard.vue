@@ -32,7 +32,7 @@
         </el-avatar>
         <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
         <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
-        <el-button type="primary" size="small" class="share-text">分享</el-button>
+        <img src="../assets/icons/fxtb.svg" class="share-text" />
       </div>
 
       <!-- 二维码区域 -->
@@ -85,7 +85,7 @@
             </div>
           </div>
         </div>
-        <el-button class="copy-address-btn" type="primary" size="small" round @click="copyAddress">复制地址</el-button>
+        <el-button class="copy-address-btn" type="primary" size="small" round @click="copyAddress">选择门店</el-button>
       </div>
 
       <!-- 导航按钮 -->
@@ -361,10 +361,8 @@ const getCouponDetails = async (id) => {
   margin-bottom: 16px;
   margin-top: 10px;
   .share-text {
-    width: 40px;
+    width: 30px;
     background: var(--bg-transparent);
-    border: 1px solid var(--bg-card);
-    border-radius: var(--radius-sm);
     font-size: var(--font-base);
     color: var(--text-primary);
     font-weight: bold;
@@ -540,7 +538,8 @@ const getCouponDetails = async (id) => {
   background: #FFFFFF;
   border-radius: var(--radius-md);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
+  position: relative;
+  min-width: 0;
 }
 
 /* 复制地址按钮 */
@@ -574,6 +573,7 @@ const getCouponDetails = async (id) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .dropdown-icon {
@@ -583,16 +583,28 @@ const getCouponDetails = async (id) => {
   transition: transform 0.3s ease;
 }
 
+.dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
 .dropdown-icon.rotate {
   transform: rotate(180deg);
 }
 
 .address-dropdown {
-  margin-top: 12px;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-bottom: 8px;
   max-height: 200px;
   overflow-y: auto;
   border-top: 1px solid var(--border-light);
-  padding-top: 12px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
 .address-item {
@@ -621,9 +633,7 @@ const getCouponDetails = async (id) => {
 .store-detail {
   font-size: var(--font-xs);
   color: var(--text-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-word;
 }
 
 /* 导航按钮 */
