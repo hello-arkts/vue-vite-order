@@ -16,7 +16,7 @@
     >
       <div class="contact-drawer-content">
         <div class="qrcode-section">
-          <img :src="currentAd?.qrcode" alt="客服二维码" class="qrcode-canvas">
+          <img src="../assets/icons/wexin.png" alt="客服二维码" class="qrcode-canvas">
           <p class="qrcode-tip">长按保存到手机</p>
         </div>
       </div>
@@ -28,7 +28,6 @@
 import { ref, watch, onMounted, nextTick } from 'vue'
 import NavBar from "@/components/NavBar.vue";
 import DraggableDrawer from '@/components/DraggableDrawer.vue';
-import QRCode from 'qrcode'
 import { useAdvertisementStore } from '@/store/advertisement.js';
 
 const advertisementStore = useAdvertisementStore()
@@ -97,6 +96,8 @@ const handleClick = () => {
 }
 
 .qrcode-canvas {
+  width: 260px;
+  height: 360px;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }

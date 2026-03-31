@@ -87,16 +87,16 @@
             </div>
           </div>  
         </div>
-        <el-button class="select-store-btn" type="primary" size="small" round @click="handleSelectStore">选择门店</el-button>
+        <el-button class="select-store-btn" size="small" round @click="handleSelectStore">选择门店</el-button>
       </div>
 
       <!-- 导航按钮 -->
       <el-button
-        type="primary" 
-        size="large" 
-        class="nav-btn" 
-        @click="handleNavigation"
-      >
+          type="primary"
+          size="large"
+          class="nav-btn"
+          @click="handleNavigation"
+        >
         <el-icon><Position /></el-icon>
         导航到店
       </el-button>
@@ -555,7 +555,7 @@ const getCouponDetails = async (id) => {
   height: 40px;
   padding: 0 16px;
   font-size: var(--font-sm);
-  background: #5668F4;
+  border: 1px solid var(--border-light);
   border-radius: 25px 25px 25px 25px;
 }
 
