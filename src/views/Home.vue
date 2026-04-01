@@ -136,7 +136,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from 'vue'
+import {ref, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import CategoryTabs from '../components/CategoryTabs.vue'
@@ -147,6 +147,8 @@ import ForgotPasswordDrawer from '../components/ForgotPasswordDrawer.vue'
 import { categories,quickCards } from '../utils/curatedList.js'
 import { getCouponList } from '../api/index.js'
 import {ElMessage} from "element-plus";
+import { useAdvertisementStore } from '@/store/advertisement.js';
+const advertisementStore = useAdvertisementStore()
 
 
 const router = useRouter()
@@ -160,6 +162,8 @@ const forgotPasswordDrawerVisible = ref(false)
 const filteredCoupons = ref([])
 
 const goToJump = () => {
+  advertisementStore.selfApplyStatus = true
+  advertisementStore.applyUrl = 'https://tdac.immigration.go.th/'
   router.push('/jump')
 }
 const goToParty = () => {

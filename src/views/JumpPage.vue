@@ -3,16 +3,23 @@
     <NavBar title="返回" @click="handleClick" />
     <div class="jump-page-container">
       <div class='jump-page-content'>
-        <p class="note-text">{{ currentAd?.note }}</p>
+        <p class="note-text">{{ currentAd?.note || advertisementStore.applyUrl }}</p>
       </div>
       <div class="jump-page-btn-group">
+        <el-button
+            type="primary"
+            class="nav-btn"
+            @click="handleApplyClick"
+            v-if="advertisementStore.selfApplyStatus">
+          自行申请
+        </el-button>
         <el-button type="primary" class="nav-btn" @click="contactDrawerVisible = true">联系客服</el-button>
       </div>
     </div>
 
     <DraggableDrawer
       v-model="contactDrawerVisible"
-      initial-size="60%"
+      initial-size="70%"
     >
       <div class="contact-drawer-content">
         <div class="qrcode-section">
@@ -25,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref } from 'vue'
 import NavBar from "@/components/NavBar.vue";
 import DraggableDrawer from '@/components/DraggableDrawer.vue';
 import { useAdvertisementStore } from '@/store/advertisement.js';
@@ -33,11 +40,17 @@ import { useAdvertisementStore } from '@/store/advertisement.js';
 const advertisementStore = useAdvertisementStore()
 const currentAd = advertisementStore.currentAd
 const contactDrawerVisible = ref(false)
-const qrCanvas = ref(null)
 
+// 自行申请点击事件
+const handleApplyClick = () => {
+  window.open(advertisementStore.applyUrl, '_blank')
+}
 
+// 返回点击事件
 const handleClick = () => {
   advertisementStore.setCurrentAd({})
+  advertisementStore.applyUrl = ''
+  advertisementStore.selfApplyStatus = false
 }
 
 </script>
@@ -60,6 +73,7 @@ const handleClick = () => {
 }
 
 .jump-page-btn-group {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -72,13 +86,13 @@ const handleClick = () => {
 }
 
 .nav-btn {
-  width: 250px;
+  width: 100%;
   height: 48px;
   font-size: var(--font-md);
   background: #5668F4;
-  border-radius: 25px 25px 25px 25px;
   border: none;
   margin-bottom: 20px;
+  border-radius: 24px;
 }
 
 .contact-drawer-content {
