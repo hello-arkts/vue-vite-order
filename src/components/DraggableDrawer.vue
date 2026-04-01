@@ -1,19 +1,19 @@
 <template>
   <Teleport to="body">
-    <div v-if="isVisible" class="drawer-overlay" :class="{ 'is-closing': !opened }" @click="closeDrawer">
+    <div v-if="isVisible" class="drawer-overlay" :class="{ 'is-closing': !opened }" @click="closeDrawer" @touchmove.prevent>
       <div
-        class="drawer-wrapper"
-        :style="wrapperStyle"
-        @click.stop
+          class="drawer-wrapper"
+          :style="wrapperStyle"
+          @click.stop
       >
         <div class="drawer-container">
           <div class="drag-handle">
             <div
-              class="drag-indicator"
-              @touchstart="onTouchStart"
-              @touchmove="onTouchMove"
-              @touchend="onTouchEnd"
-              @mousedown="onMouseDown"
+                class="drag-indicator"
+                @touchstart="onTouchStart"
+                @touchmove="onTouchMove"
+                @touchend="onTouchEnd"
+                @mousedown="onMouseDown"
             >
               <div class="drag-indicator-line"></div>
             </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onUnmounted } from 'vue'
+import { ref, watch, computed, onUnmounted, onMounted } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -57,6 +57,15 @@ const props = defineProps({
   }
 })
 
+onMounted(() => {
+  const setVh = () => {
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }
+  setVh()
+  window.addEventListener('resize', setVh)
+})
+
 const LONG_PRESS_DURATION = 100
 const MOVE_THRESHOLD = 0.5
 
@@ -78,11 +87,13 @@ watch(() => props.modelValue, (val) => {
     opened.value = false
     currentHeight.value = parseInt(props.initialSize)
     isVisible.value = true
+    document.body.style.overflow = 'hidden'
     setTimeout(() => {
       opened.value = true
     }, 10)
   } else {
     opened.value = false
+    document.body.style.overflow = ''
     setTimeout(() => {
       isVisible.value = false
     }, 300)
@@ -94,12 +105,13 @@ watch(isVisible, (val) => {
 })
 
 const wrapperStyle = computed(() => ({
-  height: opened.value ? `${currentHeight.value}%` : '0%',
+  height: opened.value ? `calc(var(--vh, 1vh) * ${currentHeight.value})` : '0px',
   transition: isDragging.value ? 'none' : 'height 0.3s ease'
 }))
 
 const closeDrawer = () => {
   opened.value = false
+  document.body.style.overflow = ''
   setTimeout(() => {
     isVisible.value = false
   }, 300)

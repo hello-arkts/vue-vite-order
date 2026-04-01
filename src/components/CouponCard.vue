@@ -1029,21 +1029,21 @@ const getCouponDetails = async (id) => {
   .map-option {
     padding: 20px;
   }
-  
+
   .map-icon {
     width: 56px;
     height: 56px;
   }
-  
+
   .map-icon img {
     width: 36px;
     height: 36px;
   }
-  
+
   .map-name {
     font-size: var(--font-md);
   }
-  
+
   .map-desc {
     font-size: var(--font-base);
   }

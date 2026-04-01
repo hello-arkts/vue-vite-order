@@ -484,7 +484,7 @@ onMounted(() => {
 }
 
 .banner-title {
-  font-size: var(--font-md);
+  font-size: var(--font-base);
   font-weight: bold;
   color: #FFFFFF;
   text-align: left;
