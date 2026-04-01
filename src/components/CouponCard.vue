@@ -23,6 +23,7 @@
     initial-size="95%"
     min-height="30%"
     max-height="95%"
+    :content-style="{ paddingTop: '0' }"
   >
     <div class="drawer-content">
       <!-- 商户信息 -->
@@ -197,8 +198,10 @@ const generateQrCode = async () => {
   await nextTick()
   if (qrCanvas.value && couponTypes.value.qrcode) {
     try {
-      await QRCode.toCanvas(qrCanvas.value, couponTypes.value.qrcode, {
-        width: 200,
+      const canvas = qrCanvas.value
+      const containerWidth = canvas.offsetWidth || 144
+      await QRCode.toCanvas(canvas, couponTypes.value.qrcode, {
+        width: containerWidth,
         margin: 2,
         color: {
           dark: '#000000',
@@ -365,8 +368,8 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 10px;
+  margin-bottom: 12px;
+  margin-top: 8px;
   .share-text {
     width: 30px;
     background: var(--bg-transparent);
@@ -414,17 +417,17 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 28px;
+  margin-bottom: 12px;
 }
 
 .qrcode-box {
-  width: 220px;
-  height: 220px;
-  padding: 12px;
+  width: 160px;
+  height: 160px;
+  padding: 8px;
   background: white;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  margin-bottom: 7px;
+  margin-bottom: 6px;
 }
 
 .qrcode-canvas {
@@ -434,14 +437,14 @@ const getCouponDetails = async (id) => {
 }
 
 .coupon-code {
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   color: var(--text-primary);
   font-weight: 500;
   margin-bottom: 4px;
 }
 
 .coupon-tip {
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   color: var(--text-primary);
   font-weight: 500;
   font-style: normal;
@@ -450,12 +453,12 @@ const getCouponDetails = async (id) => {
 
 /* 券类型选择 */
 .coupon-types {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .types-scroll {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   overflow-x: auto;
   padding: 4px 0;
   -webkit-overflow-scrolling: touch;
@@ -466,12 +469,12 @@ const getCouponDetails = async (id) => {
 }
 
 .type-card {
-  width: 118px;
-  height: 87px;
+  width: 120px;
+  height: 75px;
   background: #FFE2D7;
   border-radius: 16px 16px 16px 16px;
-  min-width: 140px;
-  padding: 12px;
+  min-width: 100px;
+  padding: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
   flex-shrink: 0;
@@ -489,12 +492,12 @@ const getCouponDetails = async (id) => {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: 2px;
 }
 
 .type-name {
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   color: var(--text-primary);
   font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
   font-weight: 600;
@@ -503,7 +506,7 @@ const getCouponDetails = async (id) => {
 }
 
 .type-value {
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   color: var(--text-primary);
   font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
   font-weight: 600;
@@ -512,7 +515,7 @@ const getCouponDetails = async (id) => {
 }
 
 .type-desc {
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   margin-bottom: 2px;
   font-family: IBM Plex Sans Thai, IBM Plex Sans Thai !important;
   font-weight: 500;
@@ -523,7 +526,7 @@ const getCouponDetails = async (id) => {
 }
 
 .type-expire {
-  font-size: var(--font-xs);
+  font-size: 10px;
   color: var(--text-primary);
   font-style: normal;
   text-align: center;
@@ -534,15 +537,15 @@ const getCouponDetails = async (id) => {
 .store-address-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 16px;
   position: relative;
 }
 
 /* 门店地址 */
 .store-address {
   flex: 1;
-  padding: 12px 16px;
+  padding: 10px 12px;
   background: #FFFFFF;
   border-radius: var(--radius-md);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -553,19 +556,19 @@ const getCouponDetails = async (id) => {
 .select-store-btn {
   align-self: flex-start;
   flex-shrink: 0;
-  height: 40px;
-  padding: 0 16px;
-  font-size: var(--font-sm);
+  height: 36px;
+  padding: 0 12px;
+  font-size: var(--font-xs);
   border: 1px solid var(--border-light);
   border-radius: 25px 25px 25px 25px;
 }
 
 .copy-address-btn {
-  width: 80px;
+  width: 60px;
   height: 100%;
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   color: var(--text-secondary);
-  padding: 4px 6px;
+  padding: 2px 4px;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
 }
@@ -573,19 +576,19 @@ const getCouponDetails = async (id) => {
 .address-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
 }
 
 .location-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
 .address-text {
   flex: 1;
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -594,7 +597,7 @@ const getCouponDetails = async (id) => {
 }
 
 .dropdown-icon {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-tertiary);
   flex-shrink: 0;
   transition: transform 0.3s ease;
@@ -659,8 +662,8 @@ const getCouponDetails = async (id) => {
 /* 导航按钮 */
 .nav-btn {
   width: 100%;
-  height: 48px;
-  font-size: var(--font-md);
+  height: 44px;
+  font-size: var(--font-sm);
   background: #5668F4;
   border-radius: 25px 25px 25px 25px;
   border: none;
@@ -687,56 +690,112 @@ const getCouponDetails = async (id) => {
   .coupon-card :deep(.el-card__body) {
     padding: 20px;
   }
-  
+
   .card-logo :deep(.el-avatar) {
     width: 64px !important;
     height: 64px !important;
     font-size: 28px;
   }
-  
+
   .card-content {
     gap: 10px;
   }
-  
+
   .merchant-info :deep(.el-avatar) {
     width: 88px !important;
     height: 88px !important;
     font-size: 36px;
   }
-  
+
+  .merchant-info {
+    margin-bottom: 16px;
+    margin-top: 10px;
+  }
+
+  .qrcode-section {
+    margin-bottom: 28px;
+  }
+
   .qrcode-box {
     width: 200px;
     height: 200px;
+    padding: 12px;
+    margin-bottom: 7px;
   }
-  
+
+  .coupon-types {
+    margin-bottom: 20px;
+  }
+
   .types-scroll {
     gap: 16px;
   }
-  
+
   .type-card {
-    min-width: 160px;
-    padding: 16px;
+    width: 118px;
+    height: 87px;
+    min-width: 140px;
+    padding: 12px;
   }
-  
+
+  .type-header {
+    gap: 4px;
+  }
+
+  .type-name,
+  .type-value {
+    font-size: var(--font-md);
+  }
+
+  .type-desc {
+    font-size: var(--font-sm);
+  }
+
+  .type-expire {
+    font-size: var(--font-xs);
+  }
+
+  .store-address-container {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
   .store-address {
-    padding: 16px 20px;
+    padding: 12px 16px;
   }
-  
+
+  .select-store-btn {
+    height: 40px;
+    padding: 0 16px;
+    font-size: var(--font-sm);
+  }
+
+  .copy-address-btn {
+    width: 80px;
+    font-size: var(--font-sm);
+    padding: 4px 6px;
+  }
+
+  .address-row {
+    gap: 8px;
+  }
+
   .location-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
-  
+
   .address-text {
-    font-size: var(--font-base);
+    font-size: var(--font-sm);
   }
-  
+
   .dropdown-icon {
-    font-size: 18px;
+    font-size: 16px;
   }
-  
+
   .nav-btn {
-    height: 52px;
+    height: 48px;
+    font-size: var(--font-md);
   }
 }
 
@@ -745,48 +804,112 @@ const getCouponDetails = async (id) => {
   .coupon-card :deep(.el-card__body) {
     padding: 16px;
   }
-  
+
   .card-logo :deep(.el-avatar) {
     width: 56px !important;
     height: 56px !important;
     font-size: 24px;
   }
-  
+
   .card-content {
     gap: 8px;
   }
-  
+
   .merchant-info :deep(.el-avatar) {
     width: 80px !important;
     height: 80px !important;
     font-size: 32px;
   }
-  
+
+  .merchant-info {
+    margin-bottom: 16px;
+    margin-top: 10px;
+  }
+
+  .qrcode-section {
+    margin-bottom: 28px;
+  }
+
   .qrcode-box {
     width: 180px;
     height: 180px;
+    padding: 12px;
+    margin-bottom: 7px;
   }
-  
+
+  .coupon-types {
+    margin-bottom: 20px;
+  }
+
   .types-scroll {
     gap: 12px;
   }
-  
+
   .type-card {
+    width: 118px;
+    height: 87px;
     min-width: 140px;
     padding: 12px;
   }
-  
+
+  .type-header {
+    gap: 4px;
+  }
+
+  .type-name,
+  .type-value {
+    font-size: var(--font-md);
+  }
+
+  .type-desc {
+    font-size: var(--font-sm);
+  }
+
+  .type-expire {
+    font-size: var(--font-xs);
+  }
+
+  .store-address-container {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
   .store-address {
     padding: 12px 16px;
   }
-  
+
+  .select-store-btn {
+    height: 40px;
+    padding: 0 16px;
+    font-size: var(--font-sm);
+  }
+
+  .copy-address-btn {
+    width: 80px;
+    font-size: var(--font-sm);
+    padding: 4px 6px;
+  }
+
+  .address-row {
+    gap: 8px;
+  }
+
   .location-icon {
     width: 20px;
     height: 20px;
   }
-  
+
+  .address-text {
+    font-size: var(--font-sm);
+  }
+
+  .dropdown-icon {
+    font-size: 16px;
+  }
+
   .nav-btn {
     height: 48px;
+    font-size: var(--font-md);
   }
 }
 
