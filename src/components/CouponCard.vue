@@ -26,81 +26,87 @@
     :content-style="{ paddingTop: '0' }"
   >
     <div class="drawer-content">
-      <!-- 商户信息 -->
-      <div class="merchant-info">
-        <el-avatar :size="61">
-          <img :src="couponTypes.shop?.logo || coupon.shop?.logo" />
-        </el-avatar>
-        <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
-        <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
-        <img src="../assets/icons/fxtb.svg" class="share-text" />
-      </div>
-
-      <!-- 二维码区域 -->
-      <div class="qrcode-section">
-        <div class="qrcode-box">
-          <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
+      <!-- 可滚动区域 -->
+      <div class="drawer-middle">
+        <!-- 商户信息 -->
+        <div class="merchant-info">
+          <el-avatar :size="61">
+            <img :src="couponTypes.shop?.logo || coupon.shop?.logo" />
+          </el-avatar>
+          <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
+          <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
+          <img src="../assets/icons/fxtb.svg" class="share-text" />
         </div>
-        <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div>
-        <div class="coupon-tip">买单时请向店员出示此券码核销</div>
-      </div>
 
-      <!-- 券类型选择 -->
-      <div class="coupon-types">
-        <div class="types-scroll">
-          <div 
-            v-for="(type, index) in couponTypes.couponList"
-            :key="index"
-            class="type-card"
-            :class="{ active: activeCouponType === type.id }"
-            @click="activeCoupon(type, index)"
-          >
-            <div class="type-header">
-              <span class="type-name">{{ couponType(type) }}</span>
-              <span class="type-value">฿{{ type.amount }}</span>
-            </div>
-            <div class="type-desc">{{ couponAmount(type) }}</div>
-            <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div>
+        <!-- 二维码区域 -->
+        <div class="qrcode-section">
+          <div class="qrcode-box">
+            <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
           </div>
+          <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div>
+          <div class="coupon-tip">买单时请向店员出示此券码核销</div>
         </div>
-      </div>
 
-      <!-- 门店地址 -->
-      <div class="store-address-container">
-        <div class="store-address">
-          <div class="address-row" @click="toggleAddressDropdown">
-            <img src="../assets/icons/zb.svg" class="location-icon" />
-            <span class="address-text">{{ selectedStoreAddress }}</span>
-            <el-icon class="dropdown-icon" :class="{ 'rotate': addressDropdownVisible }"><ArrowDown /></el-icon>
-          </div>
-          <div class="address-dropdown" v-show="addressDropdownVisible">
+        <!-- 券类型选择 -->
+        <div class="coupon-types">
+          <div class="types-scroll">
             <div
-                v-for="(store, index) in couponTypes.shopList"
-                :key="index"
-                class="address-item"
-                :class="{ 'active': selectedStoreId === store.id }"
+              v-for="(type, index) in couponTypes.couponList"
+              :key="index"
+              class="type-card"
+              :class="{ active: activeCouponType === type.id }"
+              @click="activeCoupon(type, index)"
             >
-              <div @click="selectStore(store, index)">
-                <div class="store-name">{{ store.name }}</div>
-                <div class="store-detail">{{ store.address }}</div>
+              <div class="type-header">
+                <span class="type-name">{{ couponType(type) }}</span>
+                <span class="type-value">฿{{ type.amount }}</span>
               </div>
-              <el-button type="text" class="copy-address-btn" @click="copyAddress(store)">复制地址</el-button>
+              <div class="type-desc">{{ couponAmount(type) }}</div>
+              <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div>
             </div>
-          </div>  
+          </div>
         </div>
-        <el-button class="select-store-btn" size="small" round @click="handleSelectStore">选择门店</el-button>
       </div>
 
-      <!-- 导航按钮 -->
-      <el-button
-          type="primary"
-          size="large"
-          class="nav-btn"
-          @click="handleNavigation"
-        >
-        <el-icon><Position /></el-icon>
-        导航到店
-      </el-button>
+      <!-- 固定底部区域 -->
+      <div class="drawer-bottom">
+        <!-- 门店地址 -->
+        <div class="store-address-container">
+          <div class="store-address">
+            <div class="address-row" @click="toggleAddressDropdown">
+              <img src="../assets/icons/zb.svg" class="location-icon" />
+              <span class="address-text">{{ selectedStoreAddress }}</span>
+              <el-icon class="dropdown-icon" :class="{ 'rotate': addressDropdownVisible }"><ArrowDown /></el-icon>
+            </div>
+            <div class="address-dropdown" v-show="addressDropdownVisible">
+              <div
+                  v-for="(store, index) in couponTypes.shopList"
+                  :key="index"
+                  class="address-item"
+                  :class="{ 'active': selectedStoreId === store.id }"
+              >
+                <div @click="selectStore(store, index)">
+                  <div class="store-name">{{ store.name }}</div>
+                  <div class="store-detail">{{ store.address }}</div>
+                </div>
+                <el-button type="text" class="copy-address-btn" @click="copyAddress(store)">复制地址</el-button>
+              </div>
+            </div>
+          </div>
+          <el-button class="select-store-btn" size="small" round @click="handleSelectStore">选择门店</el-button>
+        </div>
+
+        <!-- 导航按钮 -->
+        <el-button
+            type="primary"
+            size="large"
+            class="nav-btn"
+            @click="handleNavigation"
+          >
+          <el-icon><Position /></el-icon>
+          导航到店
+        </el-button>
+      </div>
     </div>
 
     <!-- 地图应用选择抽屉 -->
@@ -361,6 +367,22 @@ const getCouponDetails = async (id) => {
 }
 
 .drawer-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.drawer-middle {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.drawer-bottom {
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 商户信息 */
