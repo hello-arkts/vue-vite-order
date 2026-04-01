@@ -32,7 +32,7 @@
         </el-tag>
       </div>
       <div class="quick-cards">
-        <div class="quick-card" v-for="card in quickCards" :key="card.title" @click="goToJump">
+        <div class="quick-card" v-for="(card,index) in quickCards" :key="card.title" @click="goToJump(index)">
           <img class="card-icon" :src="card.icon" :alt="card.title" />
           <div class="card-content">
             <div class="card-title">
@@ -161,9 +161,12 @@ const forgotPasswordDrawerVisible = ref(false)
 
 const filteredCoupons = ref([])
 
-const goToJump = () => {
-  advertisementStore.selfApplyStatus = true
-  advertisementStore.applyUrl = 'https://tdac.immigration.go.th/'
+const goToJump = (index) => {
+  if(index === 0){
+    // 入境申请
+    advertisementStore.selfApplyStatus = true
+    advertisementStore.applyUrl = 'https://tdac.immigration.go.th/'
+  }
   router.push('/jump')
 }
 const goToParty = () => {
