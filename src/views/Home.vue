@@ -15,7 +15,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <div class="user-info-title" @click="goToJump">
+        <div class="user-info-title" @click="goToJump" v-if="false">
           <img src="../assets/icons/red.svg" alt="抽奖" class="lottery-btn">
           <span class="lottery-text">抽奖</span>
         </div>
@@ -524,8 +524,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  justify-items: center;
-  padding: 0 0 6px 0 ;
+  justify-items: stretch;
 }
 
 /* ============ 响应式设计 ============ */
@@ -601,7 +600,7 @@ onMounted(() => {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     padding: 0 20px;
-    justify-items: center;
+    justify-items: stretch;
   }
 }
 
@@ -659,7 +658,7 @@ onMounted(() => {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     padding: 0 16px;
-    justify-items: center;
+    justify-items: stretch;
   }
 }
 </style>

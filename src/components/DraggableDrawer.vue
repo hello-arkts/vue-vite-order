@@ -18,7 +18,7 @@
               <div class="drag-indicator-line"></div>
             </div>
           </div>
-          <div class="drawer-content">
+          <div class="drawer-content" :class="contentClass" :style="contentStyle">
             <slot></slot>
           </div>
         </div>
@@ -34,6 +34,14 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
+  },
+  contentClass: {
+    type: String,
+    default: ''
+  },
+  contentStyle: {
+    type: Object,
+    default: () => ({})
   },
   initialSize: {
     type: String,

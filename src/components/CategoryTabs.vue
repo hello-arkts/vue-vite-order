@@ -69,6 +69,16 @@ const handleSelect = (tab,index) => {
 .category-tabs.wrap-mode {
   flex-wrap: wrap;
   overflow-x: visible;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+.wrap-mode .tab-item {
+  flex: none;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .tab-item {

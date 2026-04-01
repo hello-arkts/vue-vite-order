@@ -41,7 +41,7 @@
           <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
         </div>
         <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div>
-        <div class="coupon-tip">请向店员出示此二维码进行核销</div>
+        <div class="coupon-tip">买单时请向店员出示此券码核销</div>
       </div>
 
       <!-- 券类型选择 -->
@@ -105,8 +105,10 @@
     <!-- 地图应用选择抽屉 -->
     <DraggableDrawer
       v-model="mapDialogVisible"
-      initial-size="60%"
+      initial-size="80%"
+      :content-style="{ padding: '0' }"
     >
+      <div class="map-tip">请在右上角点击浏览器打开</div>
       <div class="map-options">
         <div
           v-for="mapApp in mapApps"
@@ -278,7 +280,7 @@ const getCouponDetails = async (id) => {
 <style scoped lang="scss">
 .coupon-card {
   display: block;
-  width: 168px;
+  width: 100%;
   height: 132px;
   background: #FFFFFF;
   box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.08);
@@ -286,7 +288,6 @@ const getCouponDetails = async (id) => {
   cursor: pointer;
   transition: all 0.25s ease;
   padding:16px;
-  /* 列表项入场动画 - 仅作用于卡片本身 */
   animation: fadeInUp 0.4s ease forwards;
 }
 
@@ -663,6 +664,15 @@ const getCouponDetails = async (id) => {
   background: #5668F4;
   border-radius: 25px 25px 25px 25px;
   border: none;
+}
+
+.map-tip {
+  width: 100%;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  font-style: normal;
+  text-align: right;
+  padding-right: 20px ;
 }
 
 .nav-btn:hover {
