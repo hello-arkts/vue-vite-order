@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div v-if="isVisible" class="drawer-overlay" :class="{ 'is-closing': !opened }" @click="closeDrawer" @touchmove.prevent>
+    <div v-if="isVisible" class="drawer-overlay" :class="{ 'is-closing': !opened }" @click="closeDrawer" >
       <div
           class="drawer-wrapper"
           :style="wrapperStyle"
@@ -148,7 +148,7 @@ const onMouseMove = (e) => {
 
   if (!isDragging.value && deltaTime < LONG_PRESS_DURATION) return
   if (!isDragging.value && deltaX < MOVE_THRESHOLD && deltaY < MOVE_THRESHOLD) return
-
+  document.body.style.overflow = 'hidden'
   if (!isDragging.value) {
     isDragging.value = true
     emit('drag-start')
@@ -226,7 +226,6 @@ const endDrag = () => {
     isDragging.value = false
     emit('drag-end')
   }
-  document.body.style.overflow = ''
 }
 
 const setHeight = (height) => {
