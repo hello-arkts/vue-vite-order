@@ -8,10 +8,14 @@
     <div class="card-content">
       <div class="card-logo" style="height: 35px">
         <el-avatar :size="35">
-          <img :src="coupon.shop?.logo" />
+          <!-- 备份旧版 -->
+          <!-- <img :src="coupon.shop?.logo" /> -->
+          <img :src="coupon.shop?.logoUrl" />
         </el-avatar>
       </div>
-      <div class="card-name">{{ coupon.name }}</div>
+      <!-- 备份旧版 -->
+      <!-- <div class="card-name">{{ coupon.name }}</div> -->
+      <div class="card-name">{{ coupon.nameZh }}</div>
       <div class="card-discount">{{ couponAmount(coupon) }}</div>
       <el-button class="card-btn" size="small" round @click.stop="openDrawer">立即使用</el-button>
     </div>
@@ -31,10 +35,16 @@
         <!-- 商户信息 -->
         <div class="merchant-info">
           <el-avatar :size="61">
-            <img :src="couponTypes.shop?.logo || coupon.shop?.logo" />
+            <!-- 备份旧版 -->
+            <!-- <img :src="couponTypes.shop?.logo || coupon.shop?.logo" /> -->
+            <img :src="couponTypes.shop?.logoUrl || coupon.shop?.logoUrl" />
           </el-avatar>
-          <h2 class="merchant-name">{{ couponTypes?.name }}</h2>
-          <div class="discount-text">{{ couponAmount(couponTypes) }}</div>
+          <!-- 备份旧版 -->
+          <!-- <h2 class="merchant-name">{{ couponTypes?.name }}</h2> -->
+          <h2 class="merchant-name">{{ couponTypes.shop?.brandNameZh }}</h2>
+          <!-- 备份旧版 -->
+          <!-- <div class="discount-text">{{ couponAmount(couponTypes) }}</div> -->
+          <div class="discount-text">{{ couponAmount(couponTypes.coupon || {}) }}</div>
           <img src="../assets/icons/fxtb.svg" class="share-text" />
         </div>
 
@@ -43,7 +53,9 @@
           <div class="qrcode-box">
             <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
           </div>
-          <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div>
+          <!-- 备份旧版 -->
+          <!-- <div class="coupon-code" v-if="couponTypes.code">券码 {{ couponTypes.code }}</div> -->
+          <div class="coupon-code" v-if="couponTypes.coupon?.code">券码 {{ couponTypes.coupon?.code }}</div>
           <div class="coupon-tip">买单时请向店员出示此券码核销</div>
         </div>
 
@@ -62,7 +74,9 @@
                 <span class="type-value">฿{{ type.amount }}</span>
               </div>
               <div class="type-desc">{{ couponAmount(type) }}</div>
-              <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div>
+              <!-- 备份旧版 -->
+              <!-- <div class="type-expire">有效期 {{ type.endTime ? type.endTime.split(' ')[0] : '' }}</div> -->
+              <div class="type-expire">有效期 {{ type.validityDays }}天</div>
             </div>
           </div>
         </div>
@@ -86,8 +100,11 @@
                   :class="{ 'active': selectedStoreId === store.id }"
               >
                 <div @click="selectStore(store, index)">
-                  <div class="store-name">{{ store.name }}</div>
-                  <div class="store-detail">{{ store.address }}</div>
+                  <!-- 备份旧版 -->
+                  <!-- <div class="store-name">{{ store.name }}</div> -->
+                  <!-- <div class="store-detail">{{ store.address }}</div> -->
+                  <div class="store-name">{{ couponTypes.shop?.brandNameZh }}</div>
+                  <div class="store-detail">{{ store.addressZh }}</div>
                 </div>
                 <el-button type="text" class="copy-address-btn" @click="copyAddress(store)">复制地址</el-button>
               </div>
@@ -173,8 +190,14 @@ const selectedStoreAddress = ref('')
 
 // 优惠券金额
 const couponAmount = (coupon) => {
-  if (coupon.minPoint && coupon.minPoint > 0) {
-    return '满   ' +'฿'+ coupon.minPoint + '减    ' +'฿'+ coupon.amount
+  // 备份旧版
+  // if (coupon.minPoint && coupon.minPoint > 0) {
+  //   return '满   ' +'฿'+ coupon.minPoint + '减    ' +'฿'+ coupon.amount
+  // } else {
+  //   return '฿'+ coupon.amount +'    代金券'
+  // }
+  if (coupon.thresholdAmount && coupon.thresholdAmount > 0) {
+    return '满   ' +'฿'+ coupon.thresholdAmount + '减    ' +'฿'+ coupon.amount
   } else {
     return '฿'+ coupon.amount +'    代金券'
   }
@@ -182,7 +205,13 @@ const couponAmount = (coupon) => {
 
 // 优惠券类型
 const couponType = (coupon) => {
-  if (coupon.minPoint && coupon.minPoint > 0) {
+  // 备份旧版
+  // if (coupon.minPoint && coupon.minPoint > 0) {
+  //   return '满减券'
+  // } else {
+  //   return '代金券'
+  // }
+  if (coupon.thresholdAmount && coupon.thresholdAmount > 0) {
     return '满减券'
   } else {
     return '代金券'
@@ -195,18 +224,24 @@ const toggleAddressDropdown = () => {
 
 const selectStore = (store, index) => {
   selectedStoreId.value = store.id
-  selectedStoreAddress.value = store.address
+  // 备份旧版
+  // selectedStoreAddress.value = store.address
+  selectedStoreAddress.value = store.addressZh
   addressDropdownVisible.value = false
 }
 
 // 生成二维码
 const generateQrCode = async () => {
   await nextTick()
-  if (qrCanvas.value && couponTypes.value.qrcode) {
+  // 备份旧版
+  // if (qrCanvas.value && couponTypes.value.qrcode) {
+  if (qrCanvas.value && couponTypes.value.coupon?.qrcode) {
     try {
       const canvas = qrCanvas.value
       const containerWidth = canvas.offsetWidth || 144
-      await QRCode.toCanvas(canvas, couponTypes.value.qrcode, {
+      // 备份旧版
+      // await QRCode.toCanvas(canvas, couponTypes.value.qrcode, {
+      await QRCode.toCanvas(canvas, couponTypes.value.coupon?.qrcode, {
         width: containerWidth,
         margin: 2,
         color: {
@@ -236,7 +271,9 @@ const openDrawer = () => {
 }
 
 const copyAddress = (item) => {
-  navigator.clipboard?.writeText(item.address)
+  // 备份旧版
+  // navigator.clipboard?.writeText(item.address)
+  navigator.clipboard?.writeText(item.addressZh)
   ElMessage.success('地址已复制')
 }
 
@@ -276,7 +313,9 @@ const getCouponDetails = async (id) => {
 
       // 初始化默认门店
       selectedStoreId.value = couponTypes.value.shopList[0]?.id || 0
-      selectedStoreAddress.value = couponTypes.value.shopList[0]?.address || ''
+      // 备份旧版
+      // selectedStoreAddress.value = couponTypes.value.shopList[0]?.address || ''
+      selectedStoreAddress.value = couponTypes.value.shopList[0]?.addressZh || ''
     } else {
       ElMessage.error(res.msg || '优惠券获取失败')
     }

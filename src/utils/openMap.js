@@ -15,7 +15,9 @@ export const getStoreCoordinates = (shopList, selectedStoreId, selectedStoreAddr
   return {
     lat: selectedStore?.latitude || 0,
     lng: selectedStore?.longitude || 0,
-    address: selectedStore?.address || selectedStoreAddress
+    // 备份旧版
+    // address: selectedStore?.address || selectedStoreAddress
+    address: selectedStore?.addressZh || selectedStoreAddress
   }
 }
 
