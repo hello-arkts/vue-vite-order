@@ -99,7 +99,10 @@
                   class="address-item"
                   :class="{ 'active': selectedStoreId === store.id }"
               >
-                <div @click="selectStore(store, index)">
+                <div @click="selectStore(store, index)"
+                     style="display: flex;
+                     flex-direction: column;
+                     flex: 1">
                   <!-- 备份旧版 -->
                   <!-- <div class="store-name">{{ store.name }}</div> -->
                   <!-- <div class="store-detail">{{ store.address }}</div> -->
