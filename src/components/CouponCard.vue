@@ -27,7 +27,7 @@
     initial-size="95%"
     min-height="30%"
     max-height="95%"
-    :content-style="{ paddingTop: '0' }"
+    :content-style="{ paddingTop: '0', height: '100%', display: 'flex', flexDirection: 'column' }"
   >
     <div class="drawer-content">
       <!-- 可滚动区域 -->
@@ -50,7 +50,9 @@
 
         <!-- 二维码区域 -->
         <div class="qrcode-section">
-          <div class="qrcode-box">
+          <!-- 备份旧版 -->
+          <!-- <div class="qrcode-box"> -->
+          <div class="qrcode-box" :style="{ width: (qrSize + 16) + 'px', height: (qrSize + 16) + 'px' }">
             <canvas ref="qrCanvas" class="qrcode-canvas"></canvas>
           </div>
           <!-- 备份旧版 -->
@@ -158,7 +160,7 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, Position, ArrowRight } from '@element-plus/icons-vue'
 import {getCouponDetail} from "@/api/index.js"
@@ -190,6 +192,37 @@ const couponTypes = ref([])
 const addressDropdownVisible = ref(false)
 const selectedStoreId = ref(0)
 const selectedStoreAddress = ref('')
+
+const windowHeight = ref(window.innerHeight || document.documentElement.clientHeight)
+const windowWidth = ref(window.innerWidth || document.documentElement.clientWidth)
+
+const handleResize = () => {
+  windowHeight.value = window.innerHeight || document.documentElement.clientHeight
+  windowWidth.value = window.innerWidth || document.documentElement.clientWidth
+  if (drawerVisible.value) {
+    generateQrCode()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// 动态计算二维码尺寸
+const qrSize = computed(() => {
+  const drawerHeight = windowHeight.value * 0.95
+  const fixedElementsHeight = 400 // 估算其他固定元素的高度总和
+  // 留出 8% 的高度作为安全裕量
+  const safeMargin = windowHeight.value * 0.08
+  const availableHeight = drawerHeight - fixedElementsHeight - safeMargin
+  const availableWidth = windowWidth.value - 64
+  // 将最大尺寸限制在 200，避免在大屏设备上二维码过大显得突兀
+  return Math.max(120, Math.min(200, availableHeight, availableWidth))
+})
 
 // 优惠券金额
 const couponAmount = (coupon) => {
@@ -241,7 +274,9 @@ const generateQrCode = async () => {
   if (qrCanvas.value && couponTypes.value.coupon?.qrcode) {
     try {
       const canvas = qrCanvas.value
-      const containerWidth = canvas.offsetWidth || 144
+      // 备份旧版
+      // const containerWidth = canvas.offsetWidth || 144
+      const containerWidth = qrSize.value
       // 备份旧版
       // await QRCode.toCanvas(canvas, couponTypes.value.qrcode, {
       await QRCode.toCanvas(canvas, couponTypes.value.coupon?.qrcode, {
@@ -313,6 +348,8 @@ const getCouponDetails = async (id) => {
     if (res.code === 200) {
       couponTypes.value = res.data || []
       drawerVisible.value = true
+      // 重置地址下拉框状态，防止之前打开后未关闭
+      addressDropdownVisible.value = false
 
       // 初始化默认门店
       selectedStoreId.value = couponTypes.value.shopList[0]?.id || 0
@@ -412,13 +449,20 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  /* 移除 overflow: hidden; 避免下拉框阴影或内容被截断 */
+  /* overflow: hidden; */
 }
 
 .drawer-middle {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /* 备份旧版 */
+  /* overflow-y: auto; */
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* 改为均匀分布 */
+  /* 移除 overflow-x: hidden; 避免阴影等溢出被截断 */
+  /* overflow-x: hidden; */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -432,8 +476,8 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 12px;
-  margin-top: 8px;
+  /* 移除固定的上下 margin，由父级的 space-evenly 统一控制 */
+  flex-shrink: 0;
   .share-text {
     width: 30px;
     background: var(--bg-transparent);
@@ -481,17 +525,25 @@ const getCouponDetails = async (id) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: center;
+  /* 移除固定的 bottom margin */
+  /* 让二维码区域自适应填补，但不设置 flex: 1 挤压其他元素 */
+  /* flex: 1; */
+  /* min-height: 0; */
 }
 
 .qrcode-box {
-  width: 160px;
-  height: 160px;
+  /* 备份旧版 */
+  /* width: 160px; */
+  /* height: 160px; */
   padding: 8px;
   background: white;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .qrcode-canvas {
@@ -517,7 +569,8 @@ const getCouponDetails = async (id) => {
 
 /* 券类型选择 */
 .coupon-types {
-  margin-bottom: 16px;
+  /* 移除 margin-bottom */
+  flex-shrink: 0;
 }
 
 .types-scroll {
@@ -632,7 +685,7 @@ const getCouponDetails = async (id) => {
   height: 100%;
   font-size: var(--font-xs);
   color: var(--text-secondary);
-  padding: 2px 4px;
+  padding: 4px 8px;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
 }
@@ -677,19 +730,22 @@ const getCouponDetails = async (id) => {
 
 .address-dropdown {
   position: absolute;
-  top: -10px;
+  /* 将 top 改为 bottom 紧贴上方元素，避免硬编码位移 */
+  bottom: 100%;
   left: 0;
   right: 0;
   width: 100%;
-  transform: translateY(-100%);
+  /* 移除原本利用 transform 处理的位置偏移，增加向上的外边距拉开点距离 */
+  margin-bottom: 8px;
   max-height: 200px;
   overflow-y: auto;
-  border-top: 1px solid var(--border-light);
+  border: 1px solid var(--border-light);
   background: #fff;
   border-radius: var(--radius-md);
-  box-shadow: 0 -2px 8px rgb(0 0 0 / 0.17);
+  /* 调整阴影使其四周及顶部更加明显可见 */
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
-  z-index: 10;
+  z-index: 100;
 }
 
 .address-item {
@@ -781,8 +837,9 @@ const getCouponDetails = async (id) => {
   }
 
   .qrcode-box {
-    width: 200px;
-    height: 200px;
+    /* 备份旧版 */
+    /* width: 200px; */
+    /* height: 200px; */
     padding: 12px;
     margin-bottom: 7px;
   }
@@ -895,8 +952,9 @@ const getCouponDetails = async (id) => {
   }
 
   .qrcode-box {
-    width: 180px;
-    height: 180px;
+    /* 备份旧版 */
+    /* width: 180px; */
+    /* height: 180px; */
     padding: 12px;
     margin-bottom: 7px;
   }
