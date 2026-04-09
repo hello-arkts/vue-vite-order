@@ -33,7 +33,7 @@
           </el-dropdown>
           <el-input
             v-model="loginForm.phone"
-            placeholder="062 229 3340"
+            placeholder="请输入手机号"
             class="phone-input"
           />
           <img :src="selectedCountry.icon" class="input-icon flag-icon" />
