@@ -26,7 +26,7 @@ export const getCouponList = (params = {}) => {
 
 // 获取优惠券详情新版
 export const getCouponDetail = (params = {}) => {
-  return post('/mall-portal/home/couponDetail', params)
+  return post('/mall-portal/member/coupon/couponDetail', params)
 }
 
 
